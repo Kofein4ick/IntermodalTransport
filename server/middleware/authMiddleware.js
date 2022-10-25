@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const { validationSchema } = require('../utils/validationSchema')
 
 const checkToken = async (req, res, next) => {
     if (req.method === 'OPTIONS') {
@@ -27,8 +28,25 @@ const checkToken = async (req, res, next) => {
     }
 }
 
-//TODO: проверка введенных полей
+const checkFields = async (req, res, next) => {
+    const {login, password} = req.body
+
+    const payload = {
+        email: login,
+        password: password,
+    }
+
+    const {error} = validationSchema.validate(payload)
+    if (error) {
+        return res.status(400).json({
+            message: error.details[0].message
+        })
+    }
+
+    next()
+}
 
 module.exports = {
     checkToken,
+    checkFields,
 }
