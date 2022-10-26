@@ -9,7 +9,7 @@ function Authorization() {
                     <img className="mx-auto mb-10 h-25 w-25" src="/img/person.svg" alt="person" />
                     <input className="mx-auto input_style" type="email" placeholder="Адрес электронной почты" />
                     <input className="mx-auto input_style" type="password" placeholder="Пароль" />
-                    <button className="button_style">Регистрация</button>
+                    <button className="button_style">Авторизация</button>
                     <div className="mx-auto">
                         <p className="inline">Нет профиля? </p>
                         <a className="mx-auto text-blue-500" href="#">Зарегестрируйтесь, это легко!</a>
