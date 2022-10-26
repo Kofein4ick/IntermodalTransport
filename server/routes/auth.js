@@ -4,7 +4,7 @@ const { checkToken, checkFields } = require('../middleware/authMiddleware')
 
 const router = new Router()
 
-router.post('/registration', registration)
+router.post('/registration', checkFields, registration)
 
 router.post('/login', checkFields, login)
 
