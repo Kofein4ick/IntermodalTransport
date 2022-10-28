@@ -1,5 +1,5 @@
 const {User} = require('../models/models')
-const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 const {generateJwt} = require('../utils/generateToken')
 
 const registration = async (req, res) => {
@@ -15,8 +15,10 @@ const registration = async (req, res) => {
         }
 
         //хеширование пароля
-        const salt = bcrypt.genSaltSync(10)
-        const hashPassword = bcrypt.hashSync(password, salt)
+        const hashPassword = crypto
+                                .createHmac(process.env.ALGORITHM,process.env.SECRETSALT)
+                                .update(password)
+                                .digest(process.env.TYPE)
 
         const user = await User.create({
             login: login,
@@ -48,9 +50,14 @@ const login = async (req, res) => {
                 message:'Пользователя с таким логином не существует.'
             })
         }
+        
         //проверка правильности введенного пароля
-        const isCorrect = await bcrypt.compare(password, user.password)
-        if (!isCorrect) {
+        const hashPassword = crypto
+                                .createHmac(process.env.ALGORITHM,process.env.SECRETSALT)
+                                .update(password)
+                                .digest(process.env.TYPE)
+        
+        if (hashPassword !== user.password) {
             return res.status(406).json({
                 message:'Неправильно введён пароль.'
             })
