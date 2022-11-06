@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 .input_style {
     @apply block mb-7 rounded-lg  border-2 w-72 h-10 xl:w-80 md:h-12 md:w-80 text-lg pl-2;
 }

@@ -560,12 +560,30 @@ video {
   margin-right: auto;
 }
 
+.mx-9 {
+  margin-left: 2.25rem;
+  margin-right: 2.25rem;
+}
+
+.mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
 
 .mb-10 {
   margin-bottom: 2.5rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
+.mt-11 {
+  margin-top: 2.75rem;
 }
 
 .block {
@@ -580,12 +598,24 @@ video {
   display: flex;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
+.h-14 {
+  height: 3.5rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
 
 .w-full {
   width: 100%;
+}
+
+.w-14 {
+  width: 3.5rem;
 }
 
 .grow {
@@ -600,8 +630,21 @@ video {
   align-items: center;
 }
 
-.bg-\[url\(\'\'\)\] {
-  background-image: url('');
+.justify-between {
+  justify-content: space-between;
+}
+
+.bg-\[\#F8F7F7\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 247 247 / var(--tw-bg-opacity));
+}
+
+.bg-logo {
+  background-image: url('/public/img/logoBg.svg');
+}
+
+.bg-background {
+  background-image: url('/public/img/headerBg.svg');
 }
 
 .bg-cover {
@@ -612,9 +655,19 @@ video {
   padding: 2.5rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 .text-\[\#606060\] {
@@ -627,9 +680,15 @@ video {
   color: rgb(59 130 246 / var(--tw-text-opacity));
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .input_style {
   margin-bottom: 1.75rem;
   display: block;
+  height: 2.5rem;
   width: 18rem;
   border-radius: 0.5rem;
   border-width: 2px;
@@ -655,6 +714,7 @@ video {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2.5rem;
+  height: 3rem;
   width: 18rem;
   border-radius: 0.5rem;
   border-width: 2px;
@@ -663,6 +723,8 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(206 185 158 / var(--tw-bg-opacity));
   padding: 1rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
   font-size: 1.5rem;
   line-height: 2rem;
   --tw-text-opacity: 1;
@@ -678,6 +740,7 @@ video {
 
 @media (min-width: 768px) {
   .button_style {
+    height: 4rem;
     width: 20rem;
   }
 }

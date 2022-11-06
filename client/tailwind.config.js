@@ -3,9 +3,14 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     backgroundImage: {
-      'logo': "url('/public/img/logo.svg')",
+      'logo': "url('/public/img/logoBg.svg')",
+      'background': "url('/public/img/headerBg.svg')",
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        'Sinter-font': ['"Inter"', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
