@@ -7,7 +7,7 @@ export default function History() {
     const [isActive2, setIsActive2] = useState(false);
 
     return (
-        <main className='mt-80 flex flex-col'>
+        <main className='mt-9 flex flex-col'>
             <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-20'>История маршрутов</h2>
             <div>
                 <h2>
