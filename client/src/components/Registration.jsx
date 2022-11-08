@@ -19,7 +19,7 @@ function Registration() {
     useEffect(() => {
         if (status) toast(status)
         if (isAuth) navigate('/')
-    }, [status, isAuth])
+    }, [status, isAuth, navigate])
 
     const handleSubmit  = () => {
         try {

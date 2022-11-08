@@ -28,10 +28,7 @@ export const userLogin = createAsyncThunk(
 
 export const checkUser = createAsyncThunk('auth/check', async(_,{rejectWithValue}) => {
     try {
-        console.log("1")
-        const token = window.localStorage.getItem('token', data.token)
-        console.log("token", token)
-        const {data} = await axios.get('auth/check', {token})
+        const {data} = await axios.get('auth/check')
         return data
     } catch (error) {
         throw rejectWithValue(error.response.data.message)
@@ -56,10 +53,6 @@ export const register = createAsyncThunk(
         }
     }
 )
-
-export const checkIsAuth = (state) => {
-    Boolean(state.auth.token)
-}
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -102,7 +95,7 @@ export const authSlice = createSlice({
         },
         [register.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.status = action.payload.message
+            state.status = action.payload?.message
             state.token = action.payload?.token
         },
         [register.rejected]: (state, action) => {
@@ -111,6 +104,10 @@ export const authSlice = createSlice({
         },
     }
 })
+
+export const checkIsAuth = (state) => {
+    Boolean(state.auth.token)
+}
 
 export const {} = authSlice.actions
 
