@@ -1,11 +1,16 @@
+import { BrowserRouter } from 'react-router-dom'
+import {Provider} from 'react-redux'
+import {store} from './redux/store'
+import AppRoute from './components/AppRoute'
 
-import Registration from './components/Registration';
-import Authorization from './components/Authorization';
 
 function App() {
   return (
-    //<Registration />
-    <Authorization/>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AppRoute />
+        </BrowserRouter>
+      </Provider>
   );
 }
 
