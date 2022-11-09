@@ -8,7 +8,7 @@ const initialState = {
     isLoading: false,
 }
 
-export const userLogin = createAsyncThunk(
+export const loginUser = createAsyncThunk(
     'auth/login',
     async({login, password},{rejectWithValue}) => {
         try {
@@ -35,7 +35,7 @@ export const checkUser = createAsyncThunk('auth/check', async(_,{rejectWithValue
     }
 })
 
-export const register = createAsyncThunk(
+export const registerUser = createAsyncThunk(
     'auth/registration',
     async({login, password},{rejectWithValue}) => {
         try {
@@ -62,15 +62,15 @@ export const authSlice = createSlice({
     extraReducers: {
 
         // Login
-        [userLogin.pending]: (state) => {
+        [loginUser.pending]: (state) => {
             state.isLoading = true
         },
-        [userLogin.fulfilled]: (state, action) => {
+        [loginUser.fulfilled]: (state, action) => {
             state.isLoading = false
             state.status = action.payload?.message
             state.token = action.payload?.token
         },
-        [userLogin.rejected]: (state, action) => {
+        [loginUser.rejected]: (state, action) => {
             state.isLoading = false
             state.status = action.payload
         },
@@ -81,7 +81,7 @@ export const authSlice = createSlice({
         },
         [checkUser.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.status = action.payload.message
+            state.status = action.payload?.message
             state.token = action.payload?.token
         },
         [checkUser.rejected]: (state, action) => {
@@ -90,15 +90,15 @@ export const authSlice = createSlice({
         },
 
         // Registration
-        [register.pending]: (state) => {
+        [registerUser.pending]: (state) => {
             state.isLoading = true
         },
-        [register.fulfilled]: (state, action) => {
+        [registerUser.fulfilled]: (state, action) => {
             state.isLoading = false
             state.status = action.payload?.message
             state.token = action.payload?.token
         },
-        [register.rejected]: (state, action) => {
+        [registerUser.rejected]: (state, action) => {
             state.isLoading = false
             state.status = action.payload
         },
