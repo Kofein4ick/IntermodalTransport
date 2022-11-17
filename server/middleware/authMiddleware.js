@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { validationSchema } = require('../utils/validationSchema')
 
-const checkToken = async (req, res, next) => {
+const checkToken = (req, res, next) => {
     if (req.method === 'OPTIONS') {
         next()
     }
@@ -28,7 +28,7 @@ const checkToken = async (req, res, next) => {
     }
 }
 
-const checkFields = async (req, res, next) => {
+const checkFields = (req, res, next) => {
     const {login, password} = req.body
 
     const payload = {

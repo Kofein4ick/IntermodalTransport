@@ -26,7 +26,7 @@ const registration = async (req, res) => {
         })
 
         //генерация токена
-        const token = generateJwt(user.id, user.login)
+        const token = generateJwt(user.id, user.login, user.role)
         return res.status(200).json({
             token,
             message:'Вы успешно зарегистрировались.',
@@ -63,7 +63,7 @@ const login = async (req, res) => {
             })
         }
 
-        const token = generateJwt(user.id, user.login)
+        const token = generateJwt(user.id, user.login, user.role)
         return res.status(200).json({
             token,
             message:'Вы успешно вошли в аккаунт.',
@@ -78,7 +78,7 @@ const login = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const token = generateJwt(req.user.id, req.user.login)
+        const token = generateJwt(req.user.id, req.user.login, req.user.role)
         return res.status(200).json({
             token,
         })

@@ -4,6 +4,7 @@ const sequelize = require('./db')
 const cors = require('cors')
 const models = require('./models/models')
 const authRoute = require('./routes/auth')
+const userRoute = require('./routes/user')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -14,6 +15,7 @@ app.use(express.json())
 
 //Routes
 app.use('/api/auth', authRoute)
+app.use('/api/user', userRoute)
 
 async function start() {
     try {
