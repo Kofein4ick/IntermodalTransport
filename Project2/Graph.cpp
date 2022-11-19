@@ -45,28 +45,30 @@ Graph::Graph(std::string path) {
             this->graph_matrix[i][j] = 0;
 	int i = 0;
 	while (file >> from) {
-		file >> to >> weight;
-        this->add_edge(from, to, weight);
-		if (this->nodes[i].index == from) {
-			int neig = this->find_node(to);
-			this->nodes[i].set_neighbors(&this->nodes[neig], weight);
+		file >> to >> weight;//Заполнение списка и матриц
+        this->add_edge(from, to, weight);//Внесение в матрицу
+        //Внесение в список
+		if (this->nodes[i].index == from) {//Если вершина уже рассматривается
+			int neig = this->find_node(to);//Получаем индекс соседа в массиве
+			this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем соседа
 
 		}
 		else {
+            //Подводим индекс
             if (this->nodes[i].index < from)
                 while(this->nodes[i].index != from)
 			        i++;
             else
                 while (this->nodes[i].index != from)
                     i--;
-			int neig = this->find_node(to);
-			this->nodes[i].set_neighbors(&this->nodes[neig], weight);
+			int neig = this->find_node(to);//Получаем индекс вершины соседа
+			this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем
 		}
 	}
     for (unsigned i = 0; i < this->g_num_verts; ++i)
         this->graph_matrix[i][i] = 0;
 
-    set_heuristic_matrix();
+    set_heuristic_matrix();//Заполнение матрицы эвристик
 	file.close();
 };
 Graph::~Graph() {};
@@ -75,7 +77,7 @@ void Graph::add_edge(unsigned int from, unsigned int to, weight_t weight) { // Д
 	graph_matrix[from][to] = weight;
 };
 
-void Graph::set_heuristic_matrix() { // Подсчет всех эвристик
+void Graph::set_heuristic_matrix() { // Подсчет всех эвристик, через перебор всех путей по неравенству треугольника
 	heuristic_matrix = graph_matrix;
 	for (size_t k = 0; k < g_num_verts; k++)
 		for (size_t i = 0; i < g_num_verts; i++)
@@ -90,15 +92,17 @@ void Graph::set_heuristic_matrix() { // Подсчет всех эвристик
 };
 
 
-
+//Быстрай сортировка
 short Search(std::deque<Node*>& Array2, unsigned int low, unsigned int high);
 short Qsort(std::deque<Node*>& Array2, unsigned int low, unsigned int high);
+//Поиск в деке
 bool search_in_deque(std::deque<Node*> where, unsigned int index);
+//Восстановление пути
 std::vector<Node*> reconstruct_path(Node* start, Node* goal);
 
 std::vector<Node*> Graph::A_star(Node* start, Node* goal) {
-    std::deque<Node*> closedset;
-    std::deque<Node*> openset;
+    std::deque<Node*> closedset;//Список просмотренных вершин
+    std::deque<Node*> openset;//Список рассматриваемых вершин
     openset.push_back(start);
 
     start->g = 0;
@@ -106,23 +110,23 @@ std::vector<Node*> Graph::A_star(Node* start, Node* goal) {
     start->f = start->g + start->h;
 
     while (!openset.empty()) {
-        Qsort(openset, 0, openset.size() - 1);
+        Qsort(openset, 0, openset.size() - 1);//Сортировка по f
         Node* x = openset.front();
         if (x->index == goal->index)
             return reconstruct_path(start, goal);
         openset.pop_front();
         closedset.push_back(x);
         int i = 0;
-        for (i = 0; i < x->neighbors.size(); i++) {
-            if (search_in_deque(closedset, x->neighbors[i].neighbor->index))
+        for (i = 0; i < x->neighbors.size(); i++) {//Просматриваем соседей текущей вершины
+            if (search_in_deque(closedset, x->neighbors[i].neighbor->index))//Пропускаем если уже просмотрены
                 continue;
             bool tentative_is_better;
-            double tentative_g_score = x->g + x->neighbors[i].distance;
-            if (!search_in_deque(openset, x->neighbors[i].neighbor->index)) { // Если сосед x ещё не в открытом списке - добавим его туда
+            double tentative_g_score = x->g + x->neighbors[i].distance;//Считаем стоимость
+            if (!search_in_deque(openset, x->neighbors[i].neighbor->index)) { // Если сосед x ещё не в списке рассматриваемых - добавим его туда
                 openset.push_back(x->neighbors[i].neighbor);
                 tentative_is_better = true;
             }//if
-            else { // Сосед был в открытом списке, а значит мы уже знаем его g(y), h(y) и f(y)
+            else { // Сосед(у) был в открытом списке, а значит уже известны его g(y), h(y) и f(y)
                 if (tentative_g_score < x->neighbors[i].neighbor->g) {
                     // Вычисленная g(y) через x оказалась меньше, а значит нужно будет обновить  g(y), h(y), f(y)
                     tentative_is_better = true;
@@ -150,7 +154,7 @@ std::vector<Node*> Graph::A_star(Node* start, Node* goal) {
     std::vector<Node*> er;
     return er;
 };//A_star
-
+//Восстановление пути
 std::vector<Node*> reconstruct_path(Node* start, Node* goal) {
     std::vector<Node*> path;
     Node* current_node = goal;
@@ -161,7 +165,7 @@ std::vector<Node*> reconstruct_path(Node* start, Node* goal) {
     return path;
 }
 
-
+//Быстрая сортировка
 short Qsort(std::deque<Node*>& Array2, unsigned int low, unsigned int high)
 {
     unsigned int p;
@@ -197,7 +201,7 @@ short Search(std::deque<Node*>& Array2, unsigned int low, unsigned int high)
         Array2[j] = temp;
     }
 }
-
+//Поиск в деке
 bool search_in_deque(std::deque<Node*> where, unsigned int index) {
     bool res = false;
     for (Node* el : where) {
