@@ -7,38 +7,38 @@
 
 const auto MAX = UINT_MAX;
 
-typedef double weight_t;//Из муравьев переопределение дабла
-typedef std::vector<std::vector<weight_t>> Matrix;//Из муравьев определение матрицы
+typedef double weight_t;//РР· РјСѓСЂР°РІСЊРµРІ РїРµСЂРµРѕРїСЂРµРґРµР»РµРЅРёРµ РґР°Р±Р»Р°
+typedef std::vector<std::vector<weight_t>> Matrix;//РР· РјСѓСЂР°РІСЊРµРІ РѕРїСЂРµРґРµР»РµРЅРёРµ РјР°С‚СЂРёС†С‹
 
-class Node {//Вершина
+class Node {//Р’РµСЂС€РёРЅР°
 public:
-	struct neigbors_nodes {//Соседние вершины
+	struct neigbors_nodes {//РЎРѕСЃРµРґРЅРёРµ РІРµСЂС€РёРЅС‹
 		Node* neighbor;
-		double distance;//Расстояние/вес/стоимость ребра
+		double distance;//Р Р°СЃСЃС‚РѕСЏРЅРёРµ/РІРµСЃ/СЃС‚РѕРёРјРѕСЃС‚СЊ СЂРµР±СЂР°
 	};
-	Node* prev;//Для сбора пути
-	double cost_prev;//Для подсчета стоимости пути
-	std::vector<neigbors_nodes> neighbors;//Массив соседенй
-	double f;//Функциональная стоимость вершины A* f=g+h
-	double g;//Стоимость вершины A*
-	double h;//Эврестическая оценка (Эйлерово расстояние через неравенство треугольника) (из муравьев, доработано тут)
-	unsigned int index;//Индекс вершины
+	Node* prev;//Р”Р»СЏ СЃР±РѕСЂР° РїСѓС‚Рё
+	double cost_prev;//Р”Р»СЏ РїРѕРґСЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё РїСѓС‚Рё
+	std::vector<neigbors_nodes> neighbors;//РњР°СЃСЃРёРІ СЃРѕСЃРµРґРµРЅР№
+	double f;//Р¤СѓРЅРєС†РёРѕРЅР°Р»СЊРЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РІРµСЂС€РёРЅС‹ A* f=g+h
+	double g;//РЎС‚РѕРёРјРѕСЃС‚СЊ РІРµСЂС€РёРЅС‹ A*
+	double h;//Р­РІСЂРµСЃС‚РёС‡РµСЃРєР°СЏ РѕС†РµРЅРєР° (Р­Р№Р»РµСЂРѕРІРѕ СЂР°СЃСЃС‚РѕСЏРЅРёРµ С‡РµСЂРµР· РЅРµСЂР°РІРµРЅСЃС‚РІРѕ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°) (РёР· РјСѓСЂР°РІСЊРµРІ, РґРѕСЂР°Р±РѕС‚Р°РЅРѕ С‚СѓС‚)
+	unsigned int index;//РРЅРґРµРєСЃ РІРµСЂС€РёРЅС‹
 
 	Node(unsigned int in_index);
 	~Node();
 	void set_neighbors(Node* neighbor, double distance);
 };
 
-class Graph {//Граф
+class Graph {//Р“СЂР°С„
 public:
-	std::vector<Node> nodes;//Массив вершин
-	Matrix graph_matrix; // Матрица графа (Из муравьев)
-	Matrix heuristic_matrix; // Матрица эвристик (Из муравьев)
-	int find_node(unsigned int index);// Поиск вершины по индексу
-	std::vector<Node*>A_star(Node* start, Node* goal);//А*
-	unsigned g_num_verts;//Количество вершин
+	std::vector<Node> nodes;//РњР°СЃСЃРёРІ РІРµСЂС€РёРЅ
+	Matrix graph_matrix; // РњР°С‚СЂРёС†Р° РіСЂР°С„Р° (РР· РјСѓСЂР°РІСЊРµРІ)
+	Matrix heuristic_matrix; // РњР°С‚СЂРёС†Р° СЌРІСЂРёСЃС‚РёРє (РР· РјСѓСЂР°РІСЊРµРІ)
+	int find_node(unsigned int index);// РџРѕРёСЃРє РІРµСЂС€РёРЅС‹ РїРѕ РёРЅРґРµРєСЃСѓ
+	std::vector<Node*>A_star(Node* start, Node* goal);//Рђ*
+	unsigned g_num_verts;//РљРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ
 	Graph(std::string path);
 	void add_edge(unsigned int from, unsigned int to, weight_t weight);
-	void set_heuristic_matrix();//Заполнение матрицы эвристик (из муравьев)
+	void set_heuristic_matrix();//Р—Р°РїРѕР»РЅРµРЅРёРµ РјР°С‚СЂРёС†С‹ СЌРІСЂРёСЃС‚РёРє (РёР· РјСѓСЂР°РІСЊРµРІ)
 	~Graph();
 };
