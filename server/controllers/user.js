@@ -44,6 +44,14 @@ const getBestRoute = async (req, res) => {
     try {
         //определение индекса города отправки и назначения
         const {from, to} = req.body
+
+        //если город отправки и назначения это один и тот же город
+        if (from === to) {
+            return res.status(200).json({
+                message:'Вы уже находитесь в городе, в который хотите направиться.'
+            })
+        }
+
         const from_city = await City.findOne({where: {name: from}})
         if (!from_city) {
             return res.status(400).json({
@@ -94,6 +102,14 @@ const getAllRoutes = async (req, res) => {
     try {
         //определение индекса города отправки и назначения
         const {from, to} = req.body
+        
+        //если город отправки и назначения это один и тот же город
+        if (from === to) {
+            return res.status(200).json({
+                message:'Вы уже находитесь в городе, в который хотите направиться.'
+            })
+        }
+
         const from_city = await City.findOne({where: {name: from}})
         if (!from_city) {
             return res.status(400).json({
@@ -118,7 +134,31 @@ const getAllRoutes = async (req, res) => {
             return element.split("Length")
         })
         
-        return res.json({message:'OKOK'})
+        //будущий массив объектов для отправки
+        const resp = []
+
+        //подготовка результатов к отправке на фронт
+        for (let i = 0; i < result.length; i++) {
+            //формирование результата построчно
+            path = result[i][0]
+            let length = result[i][1]
+            path = path.split(' ')
+            let res_path = []
+            for (let i = 0; i < path.length; i++) {
+                let temp = await City.findByPk(Number(path[i])+1)
+                res_path.push(temp.name)
+            }
+            //console.log(res_path)
+            let element = {
+                path: res_path,
+                length: length
+            }
+            resp.push(element)
+        }
+        return res.json({
+            paths: resp,
+            message:'Все пути успешно получены.'
+        })
     } catch (error) {
         res.status(408).json({
             message:'При получении всех путей произошла непредвиденная ошибка.'
