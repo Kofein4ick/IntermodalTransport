@@ -148,7 +148,6 @@ const getAllRoutes = async (req, res) => {
                 let temp = await City.findByPk(Number(path[i])+1)
                 res_path.push(temp.name)
             }
-            //console.log(res_path)
             let element = {
                 path: res_path,
                 length: length
