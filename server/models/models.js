@@ -8,6 +8,11 @@ const User = sequelize.define('user', {
     role: {type:DataTypes.STRING, defaultValue:"USER"},
 })
 
+const City = sequelize.define('city', {
+    id: {type: DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
+    name: {type:DataTypes.STRING, unique:true, allowNull:false},
+})
 module.exports = {
     User,
+    City,
 }

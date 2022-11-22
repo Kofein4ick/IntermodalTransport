@@ -1,4 +1,5 @@
-const {User} = require('../models/models')
+const {User, City} = require('../models/models')
+const { spawnSync } = require('child_process')
 
 const getAllUsers = async (req, res) => {
     try {
@@ -39,7 +40,95 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const getBestRoute = async (req, res) => {
+    try {
+        //определение индекса города отправки и назначения
+        const {from, to} = req.body
+        const from_city = await City.findOne({where: {name: from}})
+        if (!from_city) {
+            return res.status(400).json({
+                message:'Города с таким названием нет.'
+            })
+        }
+
+        const to_city = await City.findOne({where: {name:to}})
+        if (!to_city) {
+            return res.status(400).json({
+                message:'Города с таким названием нет.'
+            })
+        }
+
+        //получение кратчайшего пути
+        let path = spawnSync('..\\AStar\\AStar.exe', ['..\\AStar\\graph.txt', `${from_city.id-1}`, `${to_city.id-1}`], { windowsVerbatimArguments: true })
+        
+        //парсинг результатов
+        path = path.output[1].toString()
+        path = path.split('\r\n')
+        let result = path.map((element) =>{
+            return element.split("Length")
+        })
+
+        //формирование результата
+        path = result[0][0]
+        path = path.split(' ')
+        let res_path = []
+        for (let i = 0; i < path.length; i++) {
+            let temp = await City.findByPk(Number(path[i])+1)
+            res_path.push(temp.name)
+        }
+
+        return res.json({
+            path: res_path,
+            length: result[0][1],
+            message:'Наилучший путь успешно получен.',
+
+        })
+    } catch (error) {
+        res.status(408).json({
+            message:'При получении лучшего пути произошла непредвиденная ошибка.'
+        })
+    }
+}
+
+const getAllRoutes = async (req, res) => {
+    try {
+        //определение индекса города отправки и назначения
+        const {from, to} = req.body
+        const from_city = await City.findOne({where: {name: from}})
+        if (!from_city) {
+            return res.status(400).json({
+                message:'Города с таким названием нет.'
+            })
+        }
+
+        const to_city = await City.findOne({where: {name:to}})
+        if (!to_city) {
+            return res.status(400).json({
+                message:'Города с таким названием нет.'
+            })
+        }
+
+        //получение всех путей
+        let path = spawnSync('..\\Ant\\AntGraphColony.exe', ['..\\Ant\\graph.dat', '0', '7'], { windowsVerbatimArguments: true })
+        
+        //парсинг результатов
+        path = path.output[1].toString()
+        path = path.split('\r\n')
+        let result = path.map((element) =>{
+            return element.split("Length")
+        })
+        
+        return res.json({message:'OKOK'})
+    } catch (error) {
+        res.status(408).json({
+            message:'При получении всех путей произошла непредвиденная ошибка.'
+        })
+    }
+}
+
 module.exports = {
     getAllUsers,
     deleteUser,
+    getBestRoute,
+    getAllRoutes,
 }
