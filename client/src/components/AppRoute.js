@@ -1,39 +1,27 @@
 import React, { useEffect } from "react";
-import {Routes , Route, Link, Navigate} from 'react-router-dom'
+import {Routes , Route,  Navigate} from 'react-router-dom'
 import { publicRoutes, authRoutes, adminRoutes} from "../routes";
 import { HISTORY_ROUTE } from "../utils/consts";
 import { useSelector } from 'react-redux'
-import { checkIsAuth, checkIsRole, checkUser } from '../redux/features/slices/authSlice'
+import { checkIsAuth,  checkUser } from '../redux/features/slices/authSlice'
 import { useDispatch } from "react-redux";
 
 
 
 
-/*{
-    isAdmin && adminRoutes.map(({path, Component})=> <Route key={path} path={path} element={<Component/>} exact/>)
-}*/
-
-
-
 
 const AppRoute = () => {
-
-  
+ 
     const dispatch = useDispatch()
-
+    
     useEffect(() => {
         dispatch(checkUser())
     },[dispatch])
-    const role = localStorage.getItem('role');
-    console.log(role)
-    
 
-
-
-    
+    const isAdmin = Boolean(localStorage.getItem('role'))
     const isAuth = useSelector(checkIsAuth)
+  
     
-    //if ()
     
     return(
         
@@ -41,7 +29,7 @@ const AppRoute = () => {
            
             {isAuth && authRoutes.map(({path, Component})=> <Route key={path} path={path} element={<Component/>}/>)}
             
-            {isAdmin && adminRoutes.map(({path, Component})=> <Route key={path} path={path} element={<Component/>} exact/>)}
+            { isAdmin && adminRoutes.map(({path, Component})=> <Route key={path} path={path} element={<Component/>} exact/>) }
                 
         
             {publicRoutes.map(({path, Component})=> <Route key={path} path={path} element={<Component/>}/>)}

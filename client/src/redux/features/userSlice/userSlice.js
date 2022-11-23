@@ -36,8 +36,6 @@ export const bestWaysUser = createAsyncThunk(
                 from,
                 to,
             })
-            console.log("длинна", data.length)
-            console.log(data)
             if(data.path){
                 window.localStorage.setItem('paths', data.path)
             }

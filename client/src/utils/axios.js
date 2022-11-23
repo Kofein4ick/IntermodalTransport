@@ -9,7 +9,6 @@ instance.interceptors.request.use((config) => {
     return config
 })
 
-console.log(instance.interceptors.request)
 
 
 export default instance

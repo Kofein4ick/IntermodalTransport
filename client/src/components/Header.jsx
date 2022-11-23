@@ -27,10 +27,13 @@ export default function Header() {
     const isAuth = useSelector(checkIsAuth)
     const dispatch = useDispatch()
 
+    const isAdmin = Boolean(localStorage.getItem('role'))
+
     const logoutHandler = () => {
         dispatch(logOut())
         window.localStorage.removeItem('token')
         navigate(HISTORY_ROUTE)
+        localStorage.removeItem('role')
         toast('Вы вышли из системы')
     }
 
@@ -40,11 +43,11 @@ export default function Header() {
                 <div className='flex flex-col'>
                     <nav className='flex justify-between mx-9 mt-5'>
                         <Link to ={HISTORY_ROUTE}><img className='w-14 h-14' src="./img/logo.svg" alt="logo"></img></Link>
-                        <ul className='flex center'>
+                        {isAdmin && <ul className='flex center'>
                             <button className='text-white mx-5 text-xl font-medium my-auto'>
                             <Link to ={ADMIN_ROUTE}> Admin </Link>
                             </button>
-                        </ul>
+                        </ul>}
                         {isAuth ? (  <ul className='flex center'>
                             <button className='text-white mx-5 text-xl font-medium my-auto' onClick={logoutHandler}>
                                 Выход

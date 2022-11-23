@@ -5,7 +5,7 @@ import { HISTORY_ROUTE } from '../utils/consts'
 import { bestWaysUser, allWaysUser } from '../redux/features/userSlice/userSlice'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { test } from '../redux/features/slices/authSlice'
+
 
 
 function Form() {
@@ -20,7 +20,6 @@ function Form() {
         try {
             dispatch(bestWaysUser({from, to}))
             dispatch(allWaysUser({from, to}))
-           // dispatch(test())
             navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
@@ -33,6 +32,7 @@ function Form() {
             <main className=" md:flex md:justify-between min-h-screen bg-[#F8F7F7]">
                 <div className="w-full flex items-center  text-[#606060]"> 
                     <div className="w-full flex flex-col md:p-0">
+                    <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-20'>Заполните форму</h2>
                         <input className="mx-auto input_form_style"
                          type="text" 
                          value={from}

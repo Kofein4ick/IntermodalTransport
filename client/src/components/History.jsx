@@ -34,15 +34,6 @@ export default function History() {
     },[dispatch])
 
 
-
-    
-   
-    //console.log(status)
-    //console.log(isAuth)
-
-
- 
-
     return (
         <div>  
             <Header/>
