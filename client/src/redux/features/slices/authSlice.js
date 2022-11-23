@@ -1,11 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import axios from '../../utils/axios'
-
+import axios from '../../../utils/axios'
+import {decodeToken} from 'react-jwt'
+const jwt = require('jsonwebtoken')
 
 const initialState = {
     token: null,
     status: null,
     isLoading: false,
+    role: null
+   
 }
 
 export const loginUser = createAsyncThunk(
@@ -19,6 +22,16 @@ export const loginUser = createAsyncThunk(
                 if(data.token) {
                     window.localStorage.setItem('token', data.token)
                 }
+
+               const decode = decodeToken(data.token)
+               if (decode.role === 'ADMIN'){
+                window.localStorage.setItem('role', "Достоин")
+               }
+
+               
+                
+
+                
                 return data
         } catch (error) {
             throw rejectWithValue(error.response.data.message)   
@@ -29,11 +42,16 @@ export const loginUser = createAsyncThunk(
 export const checkUser = createAsyncThunk('auth/check', async(_,{rejectWithValue}) => {
     try {
         const {data} = await axios.get('auth/check')
+
         return data
+        
     } catch (error) {
-        throw rejectWithValue(error.response.data.message)
+        throw rejectWithValue(error.response.role.message)
     }
 })
+
+
+
 
 export const registerUser = createAsyncThunk(
     'auth/registration',
@@ -54,10 +72,29 @@ export const registerUser = createAsyncThunk(
     }
 )
 
+
+
+
+/*export const test = createAsyncThunk('auth/test', async(_,{rejectWithValue}) => {
+    try {
+        const text = "asdf"
+          await axios.get('auth/test', text)
+        return test
+    } catch (error) {
+        throw rejectWithValue(error.response.data.message)
+    }
+})*/
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        logOut: (state) =>{
+            state.token = null
+            state.status = null
+            state.isLoading = false
+            state.role = null
+        }
     },
     extraReducers: {
 
@@ -74,6 +111,8 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.status = action.payload
         },
+
+       
 
         // GetUser
         [checkUser.pending]: (state) => {
@@ -105,10 +144,19 @@ export const authSlice = createSlice({
     }
 })
 
-export const checkIsAuth = (state) => {
+export const checkIsAuth = (state) => 
     Boolean(state.auth.token)
-}
+
+    export const checkIsRole = (state) => {
+        Boolean(state.auth.role == 'ADMIN')
+    }
+
+/*export const checkIsRole = () => {
+    if (auth.token.role = 'ADMIN') 
+    return (1)
+}*/
+
 
 export const {} = authSlice.actions
-
+export const {logOut} = authSlice.actions
 export default authSlice.reducer

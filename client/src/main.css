@@ -19,3 +19,11 @@
 .button_form_style {
     @apply w-64 h-12 md:h-16 xl:w-72 md:w-72 mx-auto mb-10 rounded-lg border-[#A3A3A3] border-2 bg-[#CEB99E] text-white p-4 py-0.5 text-2xl hover:bg-[#F3DFC3] hover:border-[#CACACA];
 }
+
+.sec_button_form_style {
+    @apply w-10 h-10 md:h-12 xl:w-12 md:w-12 mx-auto mb-10 py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white italic align-top py-0.5 text-3xl hover:bg-[#CEB99E] hover:border-[#A3A3A3];
+}
+
+.item_button_form_style {
+    @apply w-24 h-10 md:h-12 xl:w-28 md:w-28 mx-auto mb-10 py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white italic align-top py-0.5 text-xl hover:bg-[#CEB99E] hover:border-[#A3A3A3];
+}
