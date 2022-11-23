@@ -9,7 +9,7 @@ const router = new Router()
 
 router.get('/', checkRole('ADMIN'), getAllUsers)
 
-router.delete('/delete', checkRole('ADMIN'), deleteUser)
+router.delete('/:id', checkRole('ADMIN'), deleteUser)
 
 router.post('/route', getBestRoute)
 

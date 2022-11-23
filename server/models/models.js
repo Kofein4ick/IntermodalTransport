@@ -20,7 +20,6 @@ const Route = sequelize.define('route', {
     visited: {type:DataTypes.TEXT, allowNull: false},
     length: {type:DataTypes.STRING},
     cost: {type:DataTypes.STRING},
-    time: {type:DataTypes.STRING},
 })
 
 module.exports = {
