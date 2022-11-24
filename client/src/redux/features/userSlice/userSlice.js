@@ -19,7 +19,7 @@ export const getAllUsers = createAsyncThunk('user/getAllUsers', async(_,{rejectW
 
 export const deleteUser = createAsyncThunk('user/delete', async(id, {rejectWithValue}) => {
     try{
-        const{data} = await axios.delete(`/user/:${id}`,id)
+        const{data} = await axios.delete(`/user/:{id}`, id)
         return data
         }catch(error){
             throw rejectWithValue(error.response.data.message)

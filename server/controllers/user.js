@@ -20,8 +20,7 @@ const getAllUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
 
-        const {login} = req.body
-        const user = await User.findOne({where : {login}})
+        const user = await User.findOne({where : {id:req.params.id}})
         if (!user) {
             return res.status(406).json({
                 message:'Пользователя с таким логином не существует.'
@@ -84,7 +83,6 @@ const getBestRoute = async (req, res) => {
             let temp = await City.findByPk(Number(path[i])+1)
             res_path.push(temp.name)
         }
-        console.log(res_path)
         return res.json({
             path: res_path,
             length: result[0][1],
