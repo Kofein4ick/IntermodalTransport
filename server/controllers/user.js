@@ -19,9 +19,7 @@ const getAllUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-
-        const {login} = req.body
-        const user = await User.findOne({where : {login}})
+        const user = await User.findOne({where : {id: req.params.id}})
         if (!user) {
             return res.status(406).json({
                 message:'Пользователя с таким логином не существует.'
