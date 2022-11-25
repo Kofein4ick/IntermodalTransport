@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import {Routes , Route,  Navigate} from 'react-router-dom'
 import { publicRoutes, authRoutes, adminRoutes} from "../routes";
 import { HISTORY_ROUTE } from "../utils/consts";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch  } from 'react-redux'
 import { checkIsAuth,  checkUser } from '../redux/features/slices/authSlice'
-import { useDispatch } from "react-redux";
+import {decodeToken} from 'react-jwt'
+
 
 
 
@@ -13,15 +14,24 @@ import { useDispatch } from "react-redux";
 const AppRoute = () => {
  
     const dispatch = useDispatch()
+    let admin = false
     
     useEffect(() => {
         dispatch(checkUser())
     },[dispatch])
 
-    const isAdmin = Boolean(localStorage.getItem('role'))
     const isAuth = useSelector(checkIsAuth)
+
+
+    if(isAuth)  {const decode = decodeToken(window.localStorage.getItem('token'))
+               if (decode.role === 'ADMIN'){
+                admin = true
+               }}
+
+    const isAdmin = Boolean(admin)
+
   
-    
+
     
     return(
         

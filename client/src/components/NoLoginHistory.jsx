@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { AUTH_ROUTE, FORM_ROUTE} from "../utils/consts"
 import Header from './Header'
-import { Item } from './Item'
+
 
 
 

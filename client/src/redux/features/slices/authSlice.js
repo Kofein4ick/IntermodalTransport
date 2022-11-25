@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from '../../../utils/axios'
-import {decodeToken} from 'react-jwt'
-const jwt = require('jsonwebtoken')
+
 
 const initialState = {
     token: null,
@@ -22,16 +21,6 @@ export const loginUser = createAsyncThunk(
                 if(data.token) {
                     window.localStorage.setItem('token', data.token)
                 }
-
-               const decode = decodeToken(data.token)
-               if (decode.role === 'ADMIN'){
-                window.localStorage.setItem('role', "Достоин")
-               }
-
-               
-                
-
-                
                 return data
         } catch (error) {
             throw rejectWithValue(error.response.data.message)   
@@ -73,17 +62,6 @@ export const registerUser = createAsyncThunk(
 )
 
 
-
-
-/*export const test = createAsyncThunk('auth/test', async(_,{rejectWithValue}) => {
-    try {
-        const text = "asdf"
-          await axios.get('auth/test', text)
-        return test
-    } catch (error) {
-        throw rejectWithValue(error.response.data.message)
-    }
-})*/
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -148,15 +126,9 @@ export const checkIsAuth = (state) =>
     Boolean(state.auth.token)
 
     export const checkIsRole = (state) => {
-        Boolean(state.auth.role == 'ADMIN')
+        Boolean(state.auth.role === 'ADMIN')
     }
 
-/*export const checkIsRole = () => {
-    if (auth.token.role = 'ADMIN') 
-    return (1)
-}*/
 
-
-export const {} = authSlice.actions
 export const {logOut} = authSlice.actions
 export default authSlice.reducer

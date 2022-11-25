@@ -4,20 +4,9 @@ import { useDispatch } from 'react-redux'
 import { checkIsAuth, logOut } from '../redux/features/slices/authSlice'
 import { AUTH_ROUTE, HISTORY_ROUTE,ADMIN_ROUTE } from '../utils/consts'
 import {toast} from 'react-toastify'
-import { useEffect } from 'react'
-import { checkUser } from '../redux/features/slices/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-
-
-
-
-
- /*<ul className='flex center'>
-                            <button className='text-white mx-5 text-xl font-medium my-auto'>
-                            <Link to ={ADMIN_ROUTE}> Admin </Link>
-                            </button>
-                        </ul>*/
+import {decodeToken} from 'react-jwt'
 
 
 
@@ -26,14 +15,19 @@ export default function Header() {
     const navigate = useNavigate()
     const isAuth = useSelector(checkIsAuth)
     const dispatch = useDispatch()
+    let admin = false
 
-    const isAdmin = Boolean(localStorage.getItem('role'))
+    if(isAuth)  {const decode = decodeToken(window.localStorage.getItem('token'))
+               if (decode.role === 'ADMIN'){
+                admin = true
+               }}
+
+    const isAdmin = Boolean(admin)
 
     const logoutHandler = () => {
         dispatch(logOut())
         window.localStorage.removeItem('token')
         navigate(HISTORY_ROUTE)
-        localStorage.removeItem('role')
         toast('Вы вышли из системы')
     }
 

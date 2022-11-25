@@ -1,8 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import {useState, useEffect} from 'react'
-import { checkIsAuth, checkUser, deleteUser } from '../redux/features/userSlice/userSlice'
-//import { deleteUser } from "../redux/slice/authSlice";
+import { deleteUser } from '../redux/features/userSlice/userSlice'
 
 
 export const Item = ({login,id,role}) => {
