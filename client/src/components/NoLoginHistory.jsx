@@ -8,7 +8,7 @@ import Header from './Header'
 
 
             
-
+// Страница истории 
 export default function NoLogHistory() {
 
     

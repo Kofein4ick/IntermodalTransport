@@ -9,24 +9,16 @@ import { getAllUsers } from '../redux/features/userSlice/userSlice'
 
 
 
-
+// Страница администратора
 export default function AdminPage() {
-
-       // const [users, setUsers] = useState(null)
 
     const dispatch = useDispatch()
     const users = useSelector((state) => state.user.users)
-    //const chek = useSelector((state)=> state) 
     
-
-
-
-
 
     console.log(users)
     useEffect(()=> {
     dispatch(getAllUsers())
-  
     },[dispatch])
 
     

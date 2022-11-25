@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 
-
+// Страница формы
 function Form() {
 
     const [from, setFrom] = useState('')

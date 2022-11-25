@@ -9,6 +9,7 @@ const initialState = {
     isProgress: false
 }
 
+//Поучение всех пользователей
 export const getAllUsers = createAsyncThunk('user/getAllUsers', async(_,{rejectWithValue}) => {
     try {
         const { data } = await axios.get('/user/')
@@ -18,6 +19,8 @@ export const getAllUsers = createAsyncThunk('user/getAllUsers', async(_,{rejectW
     }
 })
 
+
+//Удаление пользователя
 export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWithValue}) => {
     try{
         const{data} = await axios.delete(`/user/${id}`, {id})
@@ -28,7 +31,7 @@ export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWit
     
 })
 
-
+//Получение лучшего маршрута
 export const bestWaysUser = createAsyncThunk(
     'user/bestWaysUser',
     async({from, to},{rejectWithValue}) => {
@@ -46,6 +49,8 @@ export const bestWaysUser = createAsyncThunk(
         }
     })
     
+
+    //Получение всех маршрутов
 export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
     async({from, to},{rejectWithValue}) => {
@@ -82,6 +87,7 @@ export const userSlice = createSlice({
             state.isLoading = false
         },
 
+        //delete
         [deleteUser.pending]: (state) => {
             state.isLoading = true
         },
@@ -94,6 +100,8 @@ export const userSlice = createSlice({
             state.isLoading = false
         },
 
+
+        //bestWays
         [bestWaysUser.pending]: (state) => {
             state.isLoading = false
             state.isProgress = false
@@ -111,7 +119,8 @@ export const userSlice = createSlice({
             state.isProgress = true
         },
 
-
+        
+        //allWays
         [allWaysUser.pending]: (state) => {
             state.isLoading = false
         },

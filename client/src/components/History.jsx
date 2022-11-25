@@ -8,6 +8,8 @@ import Header from './Header'
 import WaysListComponent from './WaysListComponent'
 import { bestWaysUser } from '../redux/features/userSlice/userSlice'
 
+
+//Страница истории для авторизованых
 export default function History() {
 
     const dispatch = useDispatch()

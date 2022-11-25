@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AUTH_ROUTE, HISTORY_ROUTE} from "../utils/consts"
 import '../main.css';
 
+
+// Страница регистрации
 function Registration() {
 
     const [login, setLogin] = useState('')

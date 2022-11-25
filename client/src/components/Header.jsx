@@ -10,13 +10,14 @@ import {decodeToken} from 'react-jwt'
 
 
 
-
 export default function Header() {
     const navigate = useNavigate()
     const isAuth = useSelector(checkIsAuth)
     const dispatch = useDispatch()
     let admin = false
 
+
+    // Проверка роли администратора
     if(isAuth)  {const decode = decodeToken(window.localStorage.getItem('token'))
                if (decode.role === 'ADMIN'){
                 admin = true

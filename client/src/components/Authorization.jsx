@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { REG_ROUTE, HISTORY_ROUTE } from "../utils/consts"
 import '../main.css'
 
-
+//Страница авторизации
 function Authorization() {
 
     const [login, setLogin] = useState('')
