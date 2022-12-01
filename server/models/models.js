@@ -16,11 +16,20 @@ const City = sequelize.define('city', {
 })
 
 // Модель "Сохранённый маршрут"
-const Route = sequelize.define('route', {
+const SavedRoute = sequelize.define('saved', {
     id: {type: DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
     from: {type:DataTypes.STRING, allowNull:false},
     to: {type:DataTypes.STRING, allowNull:false},
     visited: {type:DataTypes.TEXT, allowNull: false},
+    length: {type:DataTypes.STRING},
+    cost: {type:DataTypes.STRING},
+})
+
+// Модель "Сохранённый маршрут"
+const Route = sequelize.define('route', {
+    id: {type: DataTypes.INTEGER, primaryKey:true, autoIncrement:true},
+    from: {type:DataTypes.STRING, allowNull:false},
+    to: {type:DataTypes.STRING, allowNull:false},
     length: {type:DataTypes.STRING},
     cost: {type:DataTypes.STRING},
 })
@@ -32,5 +41,6 @@ Route.belongsTo(User)
 module.exports = {
     User,
     City,
+    SavedRoute,
     Route,
 }

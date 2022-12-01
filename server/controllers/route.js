@@ -1,4 +1,4 @@
-const { Route } = require('../models/models')
+const { SavedRoute } = require('../models/models')
 
 const saveRoute = async (req, res) => {
     try {
@@ -8,7 +8,7 @@ const saveRoute = async (req, res) => {
         visited = visited.join(' ')
 
         //занесение пути в бд
-        const route = await Route.create({
+        const route = await SavedRoute.create({
             from,
             to,
             visited,
@@ -33,7 +33,7 @@ const getUserRoutes = async (req, res) => {
         //получение путей пользователя
         const {id} = req.user
 
-        const routes = await Route.findAll({where: {userId: id}})
+        const routes = await SavedRoute.findAll({where: {userId: id}})
         if (!routes) {
             return res.status(406).json({
                 message:'У пользователя нет сохранённых путей.'
@@ -54,7 +54,7 @@ const getUserRoutes = async (req, res) => {
 const deleteRoute = async (req, res) => {
     try {
         //проверка существования пути
-        const route = await Route.findByPk(req.params.id)
+        const route = await SavedRoute.findByPk(req.params.id)
         if (!route) {
             return res.status(406).json({
                 message:'Такого пути не существует.'
@@ -62,7 +62,7 @@ const deleteRoute = async (req, res) => {
         }
 
         //удаление пути
-        await Route.destroy({where: {id: route.id}, force:true})
+        await SavedRoute.destroy({where: {id: route.id}, force:true})
 
         return res.status(200).json({
             message:'Путь успешно удалён.',

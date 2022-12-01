@@ -123,7 +123,7 @@ const getAllRoutes = async (req, res) => {
         }
 
         //получение всех путей
-        let path = spawnSync('..\\Ant\\AntGraphColony.exe', ['..\\Ant\\graph.dat', '0', '7'], { windowsVerbatimArguments: true })
+        let path = spawnSync('..\\Ant\\AntGraphColony.exe', ['..\\Ant\\graph.dat', `${from_city.id-1}`, `${to_city.id-1}`], { windowsVerbatimArguments: true })
         
         //парсинг результатов
         path = path.output[1].toString()
