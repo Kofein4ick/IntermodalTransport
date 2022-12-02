@@ -29,11 +29,9 @@ int Graph::find_node(unsigned int index) {
 	return -1;
 };
 //Конструктор graph
-Graph::Graph(std::string path,unsigned int mode) {
-	//std::ifstream file(path);
+Graph::Graph(unsigned int mode) {
 	unsigned num_verts;
 	unsigned weight, from, to;
-	//file >> num_verts;
     /****************************************************************************************************/
     std::string connectionString = "host=localhost port=5432 dbname=bd user=postgres password =admin";
     try
@@ -92,39 +90,10 @@ Graph::Graph(std::string path,unsigned int mode) {
     }
     /*******************************************************************************************************/
 
-    /*while (file >> from) {
-		Node in = Node(from);
-		this->nodes.push_back(in);
-		if (nodes.size() == num_verts) break;
-	}*/
-    
-/*	int i = 0;
-	while (file >> from) {
-		file >> to >> weight;//Заполнение списка и матриц
-        this->add_edge(from, to, weight);//Внесение в матрицу
-        //Внесение в список
-		if (this->nodes[i].index == from) {//Если вершина уже рассматривается
-			int neig = this->find_node(to);//Получаем индекс соседа в массиве
-			this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем соседа
-
-		}
-		else {
-            //Подводим индекс
-            if (this->nodes[i].index < from)
-                while(this->nodes[i].index != from)
-			        i++;
-            else
-                while (this->nodes[i].index != from)
-                    i--;
-			int neig = this->find_node(to);//Получаем индекс вершины соседа
-			this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем
-		}
-	}*/
     for (unsigned i = 0; i < this->g_num_verts; ++i)
         this->graph_matrix[i][i] = 0;
 
     set_heuristic_matrix();//Заполнение матрицы эвристик
-	//file.close();
 };
 Graph::~Graph() {};
 

@@ -6,7 +6,7 @@ int main() {
 	std::vector<Node*> path;//Найденный путь
 	unsigned int mode = 0;//Выблор расстояния или стоимости
 	std::cout << "Расстояние/Стоимость:"; std::cin >> mode;
-	Graph graph("graph.txt", mode);//Создание и заполнение графа
+	Graph graph(mode);//Создание и заполнение графа
 	unsigned int in_s=0;//Стартовая вершина
 	unsigned int in_g=0;//Конечная вершина
 	for (Node el : graph.nodes) {//Цикл вывода списка смежности(проверка корректности заполнености)
