@@ -37,7 +37,7 @@ public:
 	int find_node(unsigned int index);// Поиск вершины по индексу
 	std::vector<Node*>A_star(Node* start, Node* goal);//А*
 	unsigned g_num_verts;//Количество вершин
-	Graph(std::string path);
+	Graph(std::string path, unsigned int mode);
 	void add_edge(unsigned int from, unsigned int to, weight_t weight);
 	void set_heuristic_matrix();//Заполнение матрицы эвристик (из муравьев)
 	~Graph();

@@ -1,4 +1,7 @@
 #include "Graph.h"
+#include <pqxx/pqxx>
+
+
 //Установка соседа
 void Node::set_neighbors(Node* neighbor, double distance) {
 	neigbors_nodes new_node;
@@ -26,24 +29,76 @@ int Graph::find_node(unsigned int index) {
 	return -1;
 };
 //Конструктор graph
-Graph::Graph(std::string path) {
-	std::ifstream file(path);
+Graph::Graph(std::string path,unsigned int mode) {
+	//std::ifstream file(path);
 	unsigned num_verts;
 	unsigned weight, from, to;
-	unsigned int temp = -1;
-	file >> num_verts;
-	this->g_num_verts = num_verts;
-	while (file >> from) {
+	//file >> num_verts;
+    /****************************************************************************************************/
+    std::string connectionString = "host=localhost port=5432 dbname=bd user=postgres password =admin";
+    try
+    {
+        pqxx::connection connectionObject(connectionString.c_str());
+        pqxx::work worker(connectionObject);
+        pqxx::result response = worker.exec("SELECT * FROM cities ORDER BY id");
+        num_verts = response.size();
+        this->g_num_verts = num_verts;
+        for (size_t i = 0; i < response.size(); i++)
+        {
+            from = atoi(response[i][0].c_str())-1;
+            Node in = Node(from);
+            this->nodes.push_back(in);
+        }
+
+
+        this->graph_matrix = std::vector<std::vector<weight_t>>(this->g_num_verts, std::vector<weight_t>(this->g_num_verts, MAX));
+        //обнуление всего графа
+        for (int i = 0; i < g_num_verts; i++)
+            for (int j = 0; j < g_num_verts; j++)
+                this->graph_matrix[i][j] = 0;
+
+        response = worker.exec("SELECT * FROM routes ORDER BY id");
+        int i = 0;
+        for (size_t k = 0; k < response.size(); k++)
+        {
+            from = atoi(response[k][1].c_str())-1;
+            to=atoi(response[k][2].c_str())-1;
+            weight = (mode == 0) ? atoi(response[k][3].c_str()) : atoi(response[k][4].c_str());
+            this->add_edge(from, to, weight);//Внесение в матрицу
+            if (this->nodes[i].index == from) {//Если вершина уже рассматривается
+                int neig = this->find_node(to);//Получаем индекс соседа в массиве
+                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем соседа
+
+            }
+            else {
+                //Подводим индекс
+                if (this->nodes[i].index < from)
+                    while (this->nodes[i].index != from)
+                        i++;
+                else
+                    while (this->nodes[i].index != from)
+                        i--;
+                int neig = this->find_node(to);//Получаем индекс вершины соседа
+                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем
+            }
+
+        }
+
+        connectionObject.close();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    /*******************************************************************************************************/
+
+    /*while (file >> from) {
 		Node in = Node(from);
 		this->nodes.push_back(in);
 		if (nodes.size() == num_verts) break;
-	}
-    this->graph_matrix = std::vector<std::vector<weight_t>>(this->g_num_verts, std::vector<weight_t>(this->g_num_verts, MAX));
-    //обнуление всего графа
-    for (int i = 0; i < g_num_verts; i++)
-        for (int j = 0; j < g_num_verts; j++)
-            this->graph_matrix[i][j] = 0;
-	int i = 0;
+	}*/
+    
+/*	int i = 0;
 	while (file >> from) {
 		file >> to >> weight;//Заполнение списка и матриц
         this->add_edge(from, to, weight);//Внесение в матрицу
@@ -64,12 +119,12 @@ Graph::Graph(std::string path) {
 			int neig = this->find_node(to);//Получаем индекс вершины соседа
 			this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем
 		}
-	}
+	}*/
     for (unsigned i = 0; i < this->g_num_verts; ++i)
         this->graph_matrix[i][i] = 0;
 
     set_heuristic_matrix();//Заполнение матрицы эвристик
-	file.close();
+	//file.close();
 };
 Graph::~Graph() {};
 
