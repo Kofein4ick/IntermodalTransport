@@ -1,9 +1,7 @@
 import {useState} from 'react'
 
 export default function WaysListComponent(path) {
-
     const [isActive, setIsActive] = useState(false);
-    console.log("path", path)
 
     return (
         <div>
@@ -12,7 +10,6 @@ export default function WaysListComponent(path) {
                         type="button" 
                         className="flex items-center justify-between w-7/12 mx-auto p-8 font-semibold inter-font border-4 border-gray-200 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700">
                     <div>{path[0]}</div>
-                    {console.log(path[0])}
                     <div>{path[path.length - 1]}</div>
                     <div className='text-gray-500'>длина пути: {path.length}</div>
                     {!isActive &&<img src='./img/openButton.svg' alt='openButton'></img>}
@@ -31,20 +28,29 @@ export default function WaysListComponent(path) {
                             </tr>
                             <tr>
                                 {
-                                    path.length === 2 
+                                    (path.length === 2)
                                     ?
                                         path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>) 
                                     :
-                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(0, path.length - 1)
+                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(0,path.length - (path.length - 2))
                                 }
                             </tr>
                             <tr>
                                 {
-                                    path.length === 2 
+                                    (path.length === 2)
                                     ?
-                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(0, 0) 
+                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(0) 
                                     :
-                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(1)
+                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(1,path.length- 1)
+                                }
+                            </tr>
+                            <tr>
+                                {
+                                    (path.length === 2)
+                                    ?
+                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(1) 
+                                    :
+                                        path.map((city) => <td className='border border-slate-300 text-center border-x-2'>{city}</td>).slice(2)
                                 }
                             </tr>
                         </tbody>

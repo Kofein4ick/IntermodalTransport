@@ -4,9 +4,11 @@ import axios from '../../../utils/axios'
 const initialState = {
     users: [],
     paths:  [],
+    allpaths: [],
     length: null,
     isLoading: false,
-    isProgress: false
+    isProgress: false,
+    isAllProgress: false,
 }
 
 //Поучение всех пользователей
@@ -60,7 +62,6 @@ export const allWaysUser = createAsyncThunk(
                 from,
                 to,
             })
-
             return data
         } catch (error) {
             throw rejectWithValue(error.response.data.message)
@@ -112,7 +113,7 @@ export const userSlice = createSlice({
             state.length= action.payload?.length
             state.paths=action.payload?.path
             state.isProgress = true
-
+          
         },
         [bestWaysUser.rejected]: (state, action) => {
             state.isLoading = false
@@ -123,18 +124,24 @@ export const userSlice = createSlice({
         //allWays
         [allWaysUser.pending]: (state) => {
             state.isLoading = false
+            state.isAllProgress = false
         },
         [allWaysUser.fulfilled]: (state, action) => {
             state.isLoading = true
             state.status = action.payload?.message
+            state.allpaths = action.payload?.paths
+            state.isAllProgress = true
         },
         [allWaysUser.rejected]: (state, action) => {
             state.isLoading = false
+            state.isAllProgress = false
         },
     },
 })
 
-
+export const checkIsLoad = (state) => {
+    Boolean(state.user.isProgress)
+}
 
 
 export default userSlice.reducer
