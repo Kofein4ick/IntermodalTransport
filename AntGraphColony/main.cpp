@@ -25,7 +25,7 @@ struct vertex
 	vertex(vert Index, unsigned Heuristic) : index(Index), heuristic(Heuristic) {}
 };
 
-//Для работы с путями и их сортирвоки
+//Р”Р»СЏ СЂР°Р±РѕС‚С‹ СЃ РїСѓС‚СЏРјРё Рё РёС… СЃРѕСЂС‚РёСЂРІРѕРєРё
 int vec_compare(Path a, const std::pair<Path, int>& b) {
 	if (a.size() != b.first.size())
 		return 0;
@@ -69,9 +69,9 @@ bool sortbysec(const std::pair<Path, int>& a, const std::pair<Path, int>& b)
 
 class Graph
 {
-	size_t num_vertices; // Количество вершин
-	Matrix graph_matrix; // Матрица графа
-	Matrix pheromone;    // Матрица феромонов
+	size_t num_vertices; // РљРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ
+	Matrix graph_matrix; // РњР°С‚СЂРёС†Р° РіСЂР°С„Р°
+	Matrix pheromone;    // РњР°С‚СЂРёС†Р° С„РµСЂРѕРјРѕРЅРѕРІ
 	vert goal_vert;
 
 
@@ -84,7 +84,7 @@ public:
 		unsigned weight, from, to;
 		graph_matrix = std::vector<std::vector<weight_t>>(this->num_vertices, std::vector<weight_t>(this->num_vertices, MAX));
 
-		//обнуление всего графа
+		//РѕР±РЅСѓР»РµРЅРёРµ РІСЃРµРіРѕ РіСЂР°С„Р°
 		for (int i = 0; i < num_vertices; i++)
 			for (int j = 0; j < num_vertices; j++)
 				graph_matrix[i][j] = 0;
@@ -103,7 +103,7 @@ public:
 		graph_matrix[from][to] = weight;
 	}
 
-	Matrix get_reverse() const { // Обратная матрица
+	Matrix get_reverse() const { // РћР±СЂР°С‚РЅР°СЏ РјР°С‚СЂРёС†Р°
 		auto reverse_matrix = graph_matrix;
 		for (unsigned i = 0; i < num_vertices; ++i) {
 			for (unsigned j = 0; j < num_vertices; ++j) {
@@ -118,13 +118,13 @@ public:
 		return reverse_matrix;
 	}
 
-	// Муравьиный алгоритм
+	// РњСѓСЂР°РІСЊРёРЅС‹Р№ Р°Р»РіРѕСЂРёС‚Рј
 	class Ant
 	{
 	public:
-		Path path; // Маршрут муравья (Tk)
-		std::vector<bool> visited; // Посещенные вершины
-		weight_t len; // Длина маршрута 
+		Path path; // РњР°СЂС€СЂСѓС‚ РјСѓСЂР°РІСЊСЏ (Tk)
+		std::vector<bool> visited; // РџРѕСЃРµС‰РµРЅРЅС‹Рµ РІРµСЂС€РёРЅС‹
+		weight_t len; // Р”Р»РёРЅР° РјР°СЂС€СЂСѓС‚Р° 
 
 		Ant(vert start, unsigned num_ver = amount_of_verticles) : path(1, start), len(0) {
 			visited = std::vector<bool>(num_ver, false);
@@ -138,7 +138,7 @@ public:
 		}
 
 		bool find(vert vertex) {
-			// Если дошли до конца и не нашли -> false, не дошли до конца/нашли -> true
+			// Р•СЃР»Рё РґРѕС€Р»Рё РґРѕ РєРѕРЅС†Р° Рё РЅРµ РЅР°С€Р»Рё -> false, РЅРµ РґРѕС€Р»Рё РґРѕ РєРѕРЅС†Р°/РЅР°С€Р»Рё -> true
 			return visited[vertex];
 		}
 
@@ -161,13 +161,13 @@ public:
 	};
 
 
-	// Выбор вершины с заданными вероятностями
+	// Р’С‹Р±РѕСЂ РІРµСЂС€РёРЅС‹ СЃ Р·Р°РґР°РЅРЅС‹РјРё РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЏРјРё
 	vert choose_vertex(Ant& ant, Matrix& reverse_matrix, const double alpha, const double betta) {
 		auto current = ant.lastVertex();
 		auto un_vertices = unvisited_neighbours(current, ant);
 		auto chance = probability(pheromone, reverse_matrix, current, un_vertices, alpha, betta);
 		const auto random_number = (std::rand()) / static_cast<double>(RAND_MAX);
-		// Смотрим интервалы от 0.0 до 1.00
+		// РЎРјРѕС‚СЂРёРј РёРЅС‚РµСЂРІР°Р»С‹ РѕС‚ 0.0 РґРѕ 1.00
 		vert good_vertex_rand = MAX;
 		double sum_chance = 0.0;
 		for (unsigned i = 0; i < chance.size(); ++i) {
@@ -178,10 +178,10 @@ public:
 		return good_vertex_rand;
 	}
 
-	// Непосещенные соседи
+	// РќРµРїРѕСЃРµС‰РµРЅРЅС‹Рµ СЃРѕСЃРµРґРё
 	Vertex_vec unvisited_neighbours(vert& current, Ant& ant) {
 		std::vector<vert> neigh_vec;
-		// Проходим по всем вершинам
+		// РџСЂРѕС…РѕРґРёРј РїРѕ РІСЃРµРј РІРµСЂС€РёРЅР°Рј
 		for (unsigned i = 0; i < num_vertices; ++i) {
 			if (graph_matrix[current][i] < MAX && graph_matrix[current][i] > 0 && current != i && !ant.find(i))
 				neigh_vec.push_back(i);
@@ -189,22 +189,22 @@ public:
 		return neigh_vec;
 	}
 
-	// Вероятность перехода муравья из вершины i в вершину j
+	// Р’РµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РїРµСЂРµС…РѕРґР° РјСѓСЂР°РІСЊСЏ РёР· РІРµСЂС€РёРЅС‹ i РІ РІРµСЂС€РёРЅСѓ j
 	std::vector<double> probability(Matrix& pheromone, Matrix& reverse, vert current,
 		Vertex_vec& un_vertices, double alpha, double betta) {
-		// Шансы попадания в каждую смежную вершину
+		// РЁР°РЅСЃС‹ РїРѕРїР°РґР°РЅРёСЏ РІ РєР°Р¶РґСѓСЋ СЃРјРµР¶РЅСѓСЋ РІРµСЂС€РёРЅСѓ
 		std::vector<double> chance = std::vector<double>(un_vertices.size());;
-		// Считаем вероятность попадания в каждую вершину
+		// РЎС‡РёС‚Р°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РїРѕРїР°РґР°РЅРёСЏ РІ РєР°Р¶РґСѓСЋ РІРµСЂС€РёРЅСѓ
 		auto sum = 0.0;
-		for (auto un_vert : un_vertices) // Считаем знаменталь сложной формулы
+		for (auto un_vert : un_vertices) // РЎС‡РёС‚Р°РµРј Р·РЅР°РјРµРЅС‚Р°Р»СЊ СЃР»РѕР¶РЅРѕР№ С„РѕСЂРјСѓР»С‹
 			sum += pow(pheromone[current][un_vert], alpha) * pow(reverse[current][un_vert], betta);
 		for (unsigned i = 0; i < un_vertices.size(); ++i)
 			chance[i] = pow(pheromone[current][un_vertices[i]], alpha) * pow(reverse[current][un_vertices[i]], betta) / sum;
-		// Возвращаем вероятности
+		// Р’РѕР·РІСЂР°С‰Р°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё
 		return chance;
 	}
 
-	void reset_pheromone() { // Задаём матрицу феремонов
+	void reset_pheromone() { // Р—Р°РґР°С‘Рј РјР°С‚СЂРёС†Сѓ С„РµСЂРµРјРѕРЅРѕРІ
 		pheromone = Matrix(num_vertices, std::vector<weight_t>(num_vertices, 0.0));
 		for (int i = 0; i < num_vertices; i++)
 			for (int j = 0; j < num_vertices; j++) {
@@ -219,35 +219,35 @@ public:
 			return;
 		Path tpath;
 		goal_vert = goal;
-		// Для будущего рандома
+		// Р”Р»СЏ Р±СѓРґСѓС‰РµРіРѕ СЂР°РЅРґРѕРјР°
 		srand(time(nullptr));
-		// Коэффициенты коллективного и индивидуального интеллекта
+		// РљРѕСЌС„С„РёС†РёРµРЅС‚С‹ РєРѕР»Р»РµРєС‚РёРІРЅРѕРіРѕ Рё РёРЅРґРёРІРёРґСѓР°Р»СЊРЅРѕРіРѕ РёРЅС‚РµР»Р»РµРєС‚Р°
 		const double alpha = 0.9;
 		const double betta = 0.1;
-		// Количество феромона
+		// РљРѕР»РёС‡РµСЃС‚РІРѕ С„РµСЂРѕРјРѕРЅР°
 		const double Q = 10;
-		// Количество муравьев в колонии
+		// РљРѕР»РёС‡РµСЃС‚РІРѕ РјСѓСЂР°РІСЊРµРІ РІ РєРѕР»РѕРЅРёРё
 		const unsigned M = 100;
-		// Коэффициент испарения
+		// РљРѕСЌС„С„РёС†РёРµРЅС‚ РёСЃРїР°СЂРµРЅРёСЏ
 		const double p = 0.1;
 
 
-		// Задаем матрицу, обратную матрице весов
+		// Р—Р°РґР°РµРј РјР°С‚СЂРёС†Сѓ, РѕР±СЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Рµ РІРµСЃРѕРІ
 		static auto reverse_matrix = this->get_reverse();
 
-		// Цикл по всем итерациям
+		// Р¦РёРєР» РїРѕ РІСЃРµРј РёС‚РµСЂР°С†РёСЏРј
 		for (unsigned k = 0; k < ticks; ++k) {
-			// Создаем нужное кол-во муравьев
+			// РЎРѕР·РґР°РµРј РЅСѓР¶РЅРѕРµ РєРѕР»-РІРѕ РјСѓСЂР°РІСЊРµРІ
 			std::vector<Ant> ants(M, Ant(start));
 
-			// Цикл по всем муравьям
+			// Р¦РёРєР» РїРѕ РІСЃРµРј РјСѓСЂР°РІСЊСЏРј
 			for (unsigned i = 0; i < M; ++i) {
 				vert good_vertex;
-				// Цикл прохода муравья по графу
+				// Р¦РёРєР» РїСЂРѕС…РѕРґР° РјСѓСЂР°РІСЊСЏ РїРѕ РіСЂР°С„Сѓ
 				do {
-					// Выбираем вершину
+					// Р’С‹Р±РёСЂР°РµРј РІРµСЂС€РёРЅСѓ
 					good_vertex = choose_vertex(ants[i], reverse_matrix, alpha, betta);
-					// Если муравей оказался в тупике - пропускаем его
+					// Р•СЃР»Рё РјСѓСЂР°РІРµР№ РѕРєР°Р·Р°Р»СЃСЏ РІ С‚СѓРїРёРєРµ - РїСЂРѕРїСѓСЃРєР°РµРј РµРіРѕ
 					if (good_vertex == MAX) {
 						ants[i].delete_ant();
 						break;
@@ -257,13 +257,13 @@ public:
 					}
 				} while (good_vertex != goal);
 			}
-			// Записываем все пути, где муравьи дошли от начала до конца
+			// Р—Р°РїРёСЃС‹РІР°РµРј РІСЃРµ РїСѓС‚Рё, РіРґРµ РјСѓСЂР°РІСЊРё РґРѕС€Р»Рё РѕС‚ РЅР°С‡Р°Р»Р° РґРѕ РєРѕРЅС†Р°
 			for (auto ant : ants) {
 				tpath = ant.path;
 				if (tpath.size() > 0)
 				{
 					if (tpath[0] == start && tpath[tpath.size() - 1] == goal) {
-						//определение длины пути
+						//РѕРїСЂРµРґРµР»РµРЅРёРµ РґР»РёРЅС‹ РїСѓС‚Рё
 						int length = 0;
 						for (int i = 0; i < tpath.size() - 1; i++) {
 							length += graph_matrix[tpath[i]][tpath[i + 1]];
@@ -277,7 +277,7 @@ public:
 					}
 				}
 			}
-			// Оставляем феромон на ребрах + испарение
+			// РћСЃС‚Р°РІР»СЏРµРј С„РµСЂРѕРјРѕРЅ РЅР° СЂРµР±СЂР°С… + РёСЃРїР°СЂРµРЅРёРµ
 			for (unsigned i = 0; i < num_vertices; ++i)
 				for (unsigned j = 0; j < num_vertices; ++j)
 					pheromone[i][j] = (1 - p) * pheromone[i][j];
@@ -285,7 +285,7 @@ public:
 				ant.add_pheromone(pheromone, Q);
 		}
 
-		//Сортировка путей
+		//РЎРѕСЂС‚РёСЂРѕРІРєР° РїСѓС‚РµР№
 		std::sort(extended_routes.begin(), extended_routes.end(), sortbysec);
 	}
 };
@@ -302,7 +302,7 @@ int main(int argc, char* argv[]) {
 	unsigned ticks = 5;
 	graph.ant_algorithm(start, goal, ticks);
 
-	//Вывод пути
+	//Р’С‹РІРѕРґ РїСѓС‚Рё
 	if (extended_routes.size() > 0) {
 		for (int i = 0; i < extended_routes.size(); i++) {
 			Path route = extended_routes[i].first;
