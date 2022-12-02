@@ -4,7 +4,7 @@ import History from './components/History';
 import Form from './components/Form';
 import NoLogHistory from './components/NoLoginHistory';
 import AdminPage from './components/AdminPage';
-import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE } from "./utils/consts"
+import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE} from "./utils/consts"
 
 export const authRoutes = [
 
@@ -49,7 +49,7 @@ export const publicRoutes = [
     {
         path: FORM_ROUTE,
         Component: Form
-    }
+    },
 
 
     

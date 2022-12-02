@@ -72,7 +72,11 @@ export const allWaysUser = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {
+    reducers: {NewWay: (state) =>{
+        state.isProgress = false
+        state.isAllProgress = false
+
+    }
         
     },
     extraReducers: {
@@ -134,7 +138,7 @@ export const userSlice = createSlice({
         },
         [allWaysUser.rejected]: (state, action) => {
             state.isLoading = false
-            state.isAllProgress = false
+            state.isAllProgress =true
         },
     },
 })
@@ -143,5 +147,5 @@ export const checkIsLoad = (state) => {
     Boolean(state.user.isProgress)
 }
 
-
+export const {NewWay} = userSlice.actions
 export default userSlice.reducer

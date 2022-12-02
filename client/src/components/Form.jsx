@@ -1,7 +1,8 @@
 import '../main.css'
+import { useEffect} from 'react'
 import Header from './Header'
 import { useNavigate } from 'react-router-dom'
-import { HISTORY_ROUTE } from '../utils/consts'
+import { HISTORY_ROUTE, LOAD_ROUTE } from '../utils/consts'
 import { bestWaysUser, allWaysUser, checkIsLoad } from '../redux/features/userSlice/userSlice'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -12,6 +13,7 @@ import { useSelector } from 'react-redux'
 function Form() {
 
     const Loading  = useSelector((state)=>state.user.isProgress)
+    const isLoading2 = useSelector((state) => state.user.isAllProgress)
     const path  = useSelector((state)=>state.user.paths)
 
 
@@ -20,21 +22,23 @@ function Form() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    
+    
     const handleSubmit  = () => {
         try {
             dispatch(bestWaysUser({from, to}))
             dispatch(allWaysUser({from, to}))
-            if(!Loading ){
-                const timer = setTimeout(() =>{
-               navigate(HISTORY_ROUTE)}, 3000)
-                return () => clearTimeout(timer)
-           }
-            navigate(HISTORY_ROUTE)
+            
         } catch (error) {
             console.log(error)
         }
     }
+    
+    useEffect(() => {
+        if((Loading === true)){
+            navigate(HISTORY_ROUTE)  
+        }
+    },[Loading])
 
    
 
