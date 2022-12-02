@@ -8,6 +8,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <string>
+#include <pqxx/pqxx>
 
 const auto MAX = UINT_MAX;
 int amount_of_verticles = 0;
@@ -77,24 +78,43 @@ class Graph
 
 public:
 
-	Graph(std::string path) {
-		std::ifstream file(path);
-		file >> this->num_vertices;
-		amount_of_verticles = this->num_vertices;
+	Graph(unsigned int mode) {
+		//file >> this->num_vertices;
+		
 		unsigned weight, from, to;
-		graph_matrix = std::vector<std::vector<weight_t>>(this->num_vertices, std::vector<weight_t>(this->num_vertices, MAX));
+		/****************************************************************************************************/
+		std::string connectionString = "host=localhost port=5432 dbname=bd user=postgres password =admin";
+		try
+		{
+			pqxx::connection connectionObject(connectionString.c_str());
+			pqxx::work worker(connectionObject);
+			pqxx::result response= worker.exec("SELECT * FROM cities ORDER BY id");;
+			this->num_vertices = response.size();
+			amount_of_verticles = this->num_vertices;
+			this->graph_matrix = std::vector<std::vector<weight_t>>(this->num_vertices, std::vector<weight_t>(this->num_vertices, MAX));
+			//обнуление всего графа
+			for (int i = 0; i < this->num_vertices; i++)
+				for (int j = 0; j < this->num_vertices; j++)
+					this->graph_matrix[i][j] = 0;
 
-		//обнуление всего графа
-		for (int i = 0; i < num_vertices; i++)
-			for (int j = 0; j < num_vertices; j++)
-				graph_matrix[i][j] = 0;
+			response = worker.exec("SELECT * FROM routes ORDER BY id");
+			int i = 0;
+			for (size_t k = 0; k < response.size(); k++)
+			{
+				from = atoi(response[k][1].c_str()) - 1;
+				to = atoi(response[k][2].c_str()) - 1;
+				weight = (mode == 0) ? atoi(response[k][3].c_str()) : atoi(response[k][4].c_str());
+				this->add_edge(from, to, weight);//Внесение в матрицу
 
-		while (file >> from) {
-			file >> to >> weight;
-			this->add_edge(from, to, weight);
+			}
+
+			connectionObject.close();
 		}
-
-		file.close();
+		catch (const std::exception& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
+		/*******************************************************************************************************/
 		for (unsigned i = 0; i < this->num_vertices; ++i)
 			this->graph_matrix[i][i] = 0;
 	}
@@ -290,13 +310,13 @@ public:
 	}
 };
 
-int main(int argc, char* argv[]) {
-	setlocale(LC_ALL, "Russian");
+int main() {
 	enum Algorithm { A_STAR, ANT };
 	bool k;
 	unsigned short selected_algorithm = 1;
-	Graph graph(argv[1]);
-	vert start = atoi(argv[2]), goal = atoi(argv[3]);
+	Graph graph(1);//0-расстояние , 1 - стоимость
+	vert start = 0;//1 вершина
+	vert goal = 23;//24 вершина
 
 	graph.reset_pheromone();
 	unsigned ticks = 5;
@@ -308,9 +328,9 @@ int main(int argc, char* argv[]) {
 			Path route = extended_routes[i].first;
 			for (int j = 0; j < route.size(); j++) {
 				if (j == route.size() - 1)
-					std::cout << route[j];
+					std::cout << route[j]+1;
 				else
-					std::cout << route[j] << " ";
+					std::cout << route[j]+1 << " ";
 			}
 			if ( i == extended_routes.size() - 1)
 				std::cout << "Length" << extended_routes[i].second;
@@ -318,5 +338,6 @@ int main(int argc, char* argv[]) {
 				std::cout << "Length" << extended_routes[i].second << std::endl;
 		}
 	}
+	system("pause");
 	return 0;
 }
