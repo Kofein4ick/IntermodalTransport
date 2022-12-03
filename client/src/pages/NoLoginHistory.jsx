@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { AUTH_ROUTE, FORM_ROUTE} from "../utils/consts"
-import Header from './Header'
+import Header from '../components/Header'
 
 
 // Страница истории 

@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector  } from 'react-redux'
 import { getAllUsers } from '../redux/features/userSlice/userSlice'
-import Header from './Header'
-import { Item } from './Item'
+import Header from '../components/Header'
+import { Item } from '../components/Item'
 
 // Страница администратора
 export default function AdminPage() { 
