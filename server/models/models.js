@@ -32,11 +32,12 @@ const Route = sequelize.define('route', {
     to: {type:DataTypes.STRING, allowNull:false},
     length: {type:DataTypes.STRING},
     cost: {type:DataTypes.STRING},
+    norm: {type: DataTypes.STRING},
 })
 
 //Связь сохранённых путей с пользователем
-User.hasOne(Route)
-Route.belongsTo(User)
+User.hasOne(SavedRoute)
+SavedRoute.belongsTo(User)
 
 module.exports = {
     User,
