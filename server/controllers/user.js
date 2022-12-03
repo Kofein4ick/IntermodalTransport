@@ -41,7 +41,6 @@ const deleteUser = async (req, res) => {
 
 const getBestRoute = async (req, res) => {
     try {
-        //определение индекса города отправки и назначения
         const {from, to, mode} = req.body
 
         //если город отправки и назначения это один и тот же город
@@ -104,7 +103,7 @@ const getBestRoute = async (req, res) => {
                     message:'Наилучший путь успешно получен.',
                 })
                 break
-                
+
             case '1':
                 return res.status(200).json({
                     path: res_path,
@@ -147,7 +146,7 @@ const getBestRoute = async (req, res) => {
 const getAllRoutes = async (req, res) => {
     try {
         //определение индекса города отправки и назначения
-        const {from, to} = req.body
+        const {from, to, mode} = req.body
         
         //если город отправки и назначения это один и тот же город
         if (from === to) {
@@ -170,9 +169,8 @@ const getAllRoutes = async (req, res) => {
             })
         }
 
-        //TODO: Сделать проверку отсутствия путей
         //получение всех путей
-        let path = spawnSync('..\\Ant\\AntGraphColony.exe', ['..\\Ant\\graph.dat', `${from_city.id}`, `${to_city.id}`], { windowsVerbatimArguments: true })
+        let path = spawnSync('..\\Ant\\Ants.exe', [ `${from_city.id}`, `${to_city.id}`,`${mode}`], { windowsVerbatimArguments: true })
         
         //парсинг результатов
         path = path.output[1].toString()
@@ -180,24 +178,69 @@ const getAllRoutes = async (req, res) => {
         let result = path.map((element) =>{
             return element.split("Length")
         })
-        
+
+        //проверка на существование маршрута
+        if (path[0].length === 0) {
+            return res.status(400).json({
+                message:'Пути между городами не существует.',
+    
+            })
+        }
+
         //будущий массив объектов для отправки
         const resp = []
-
+        let element
         //подготовка результатов к отправке на фронт
         for (let i = 0; i < result.length; i++) {
             //формирование результата построчно
             path = result[i][0]
             let length = result[i][1]
+            let cost = 0
             path = path.split(' ')
             let res_path = []
             for (let i = 0; i < path.length; i++) {
-                let temp = await City.findByPk(Number(path[i])+1)
+                let temp = await City.findByPk(Number(path[i]))
                 res_path.push(temp.name)
             }
-            let element = {
-                path: res_path,
-                length: length
+            switch (mode) {
+                case '0':
+                    element = {
+                        path: res_path,
+                        length: length
+                    } 
+                    break
+    
+                case '1':
+                    element = {
+                        path: res_path,
+                        cost: length
+                    }
+                    break
+    
+                case '2':
+                    length = 0
+                    for (let i = 0; i < path.length-1; i++) {
+                        temp = await Route.findOne({
+                            where: {
+                                [Op.and] : [
+                                    {from: path[i]},
+                                    {to: path[i+1]}
+                                ]
+                            }
+                        })
+                        length = length + Number(temp.length)
+                        cost = cost + Number(temp.cost)
+                    }
+
+                    element = {
+                        path: res_path,
+                        length: length.toString(),
+                        cost: cost.toString(),
+                    }
+                    break
+    
+                default:
+                    break
             }
             resp.push(element)
         }
