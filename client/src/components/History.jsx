@@ -32,11 +32,12 @@ export default function History() {
         <div>  
             <Header/>
             <main className='mt-9 flex flex-col'>
-                <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-20'>История маршрутов</h2>
+                <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-10'>Лучший маршрут</h2>
                 <div>
                     {(isLoading1) && WaysListComponent(paths)}
                         </div>
                         <div className='mt-9'>
+                        <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-10'>Все маршруты</h2>
                             {(isLoading2) && allpath?.map((path) => (
                                 WaysListComponent(path.path)
                     ))}
