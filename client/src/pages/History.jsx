@@ -4,8 +4,8 @@ import { FORM_ROUTE } from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUser } from '../redux/features/slices/authSlice'
 import { NewWay } from '../redux/features/userSlice/userSlice'
-import Header from './Header'
-import WaysListComponent from './WaysListComponent'
+import Header from '../components/Header'
+import WaysListComponent from '../components/WaysListComponent'
 
 
 //Страница истории для авторизованых

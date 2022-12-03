@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {store} from './redux/store'
-import AppRoute from './components/AppRoute'
+import AppRoute from './pages/AppRoute'
 
 
 function App() {
