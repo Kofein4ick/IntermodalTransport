@@ -5,7 +5,7 @@ import Header from './Header'
 import { Item } from './Item'
 
 // Страница администратора
-export default function AdminPage() {
+export default function AdminPage() { 
 
     const dispatch = useDispatch()
     const users = useSelector((state) => state.user.users)
