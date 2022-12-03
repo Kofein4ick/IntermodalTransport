@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { checkIsAuth, userLogin, checkUser } from '../redux/slices/authSlice'
+import { checkIsAuth, loginUser } from '../redux/features/slices/authSlice'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { REG_ROUTE, HISTORY_ROUTE } from "../utils/consts"
 import '../main.css'
 
-
+//Страница авторизации
 function Authorization() {
 
     const [login, setLogin] = useState('')
@@ -19,13 +19,13 @@ function Authorization() {
 
     useEffect(() => {
         if (status) toast(status)
-        if (isAuth) navigate('/')
-    }, [status, isAuth])
-
+        if (isAuth) navigate(HISTORY_ROUTE)
+    }, [status, isAuth, navigate])
+    
     const handleSubmit  = () => {
         try {
-            dispatch(userLogin({ login, password }))
-            navigate('/')
+            dispatch(loginUser({ login, password }))
+            navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
         }
@@ -53,7 +53,7 @@ function Authorization() {
                             onClick={handleSubmit}>Авторизация</button>
                     <div className="mx-auto">
                         <p className="inline">Нет профиля? </p>
-                        <Link to= {REG_ROUTE} className="mx-auto text-blue-500" href="#">Зарегестрируйтесь, это легко!</Link>
+                        <Link to= {REG_ROUTE} className="mx-auto text-blue-500">Зарегистрируйтесь, это легко!</Link>
                     </div>
                 </div> 
             </div>

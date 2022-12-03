@@ -82,7 +82,6 @@ const getBestRoute = async (req, res) => {
             let temp = await City.findByPk(Number(path[i])+1)
             res_path.push(temp.name)
         }
-
         return res.json({
             path: res_path,
             length: result[0][1],
