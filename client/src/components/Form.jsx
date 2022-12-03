@@ -1,28 +1,22 @@
-import '../main.css'
-import { useEffect} from 'react'
-import Header from './Header'
+import { useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { HISTORY_ROUTE, LOAD_ROUTE } from '../utils/consts'
-import { bestWaysUser, allWaysUser, checkIsLoad } from '../redux/features/userSlice/userSlice'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { HISTORY_ROUTE} from '../utils/consts'
+import { useDispatch, useSelector } from 'react-redux'
+import { bestWaysUser, allWaysUser } from '../redux/features/userSlice/userSlice'
+import Header from './Header'
+import '../main.css'
 
 
 // Страница формы
 function Form() {
 
     const Loading  = useSelector((state)=>state.user.isProgress)
-    const isLoading2 = useSelector((state) => state.user.isAllProgress)
-    const path  = useSelector((state)=>state.user.paths)
-
 
     const [from, setFrom] = useState('')
     const [to, setTo] = useState('')
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    
     
     const handleSubmit  = () => {
         try {
@@ -38,23 +32,20 @@ function Form() {
         if((Loading === true)){
             navigate(HISTORY_ROUTE)  
         }
-    },[Loading])
-
-   
+    },[Loading, navigate])
 
     return ( 
         <div>
-           
             <Header/>
             <main className=" md:flex md:justify-between min-h-screen bg-[#F8F7F7]">
                 <div className="w-full flex items-center  text-[#606060]"> 
                     <div className="w-full flex flex-col md:p-0">
                     <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-20'>Заполните форму</h2>
                         <input className="mx-auto input_form_style"
-                         type="text" 
-                         value={from}
-                         onChange={(e) => setFrom(e.target.value)} 
-                         placeholder="Откуда" />
+                            type="text" 
+                            value={from}
+                            onChange={(e) => setFrom(e.target.value)} 
+                            placeholder="Откуда" />
                         <input className="mx-auto input_form_style" 
                         type="text" 
                         value={to} 

@@ -1,14 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { checkIsAuth, logOut } from '../redux/features/slices/authSlice'
+import { useNavigate, Link } from 'react-router-dom'
 import { AUTH_ROUTE, HISTORY_ROUTE,ADMIN_ROUTE } from '../utils/consts'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkIsAuth, logOut } from '../redux/features/slices/authSlice'
 import {toast} from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import {decodeToken} from 'react-jwt'
-
-
 
 export default function Header() {
     const navigate = useNavigate()
@@ -16,12 +11,11 @@ export default function Header() {
     const dispatch = useDispatch()
     let admin = false
 
-
     // Проверка роли администратора
     if(isAuth)  {const decode = decodeToken(window.localStorage.getItem('token'))
-               if (decode.role === 'ADMIN'){
-                admin = true
-               }}
+    if (decode.role === 'ADMIN') {
+        admin = true
+    }}
 
     const isAdmin = Boolean(admin)
 

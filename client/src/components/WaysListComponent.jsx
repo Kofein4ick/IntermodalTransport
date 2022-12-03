@@ -1,31 +1,14 @@
-import {useState} from 'react'
-
 export default function WaysListComponent(path) {
-    let isActive = false
-
-    const clickHandler = () => {
-        isActive = !isActive
-        console.log(isActive)
-    }
 
     return (
         <div>
-            <h2>
-                <button onClick={clickHandler} 
-                        type="button" 
-                        className="flex items-center justify-between w-7/12 mx-auto p-8 font-semibold inter-font border-4 border-gray-200 focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700">
+            <details className='w-7/12 mx-auto cursor-pointer max-w-lg' open>
+                <summary className='flex justify-between w-full mx-auto p-8 font-semibold inter-font border-4 border-gray-200 focus:ring-1 focus:ring-gray-200 hover:backdrop-brightness-95'>
                     <div>{path[0]}</div>
                     <div>{path[path.length - 1]}</div>
-                    {console.log(isActive)}
                     <div className='text-gray-500'>длина пути: {path.length}</div>
-                    {!isActive &&<img src='./img/openButton.svg' alt='openButton'></img>}
-                    {isActive &&<img src='./img/closeButton.svg' alt='openButton'></img>}
-                </button>
-            </h2>
-            {
-                isActive && 
-                <div className='w-7/12 mx-auto'>
-                    <div className="font-light border border-b-0 border-gray-100">
+                </summary>
+                <div className="font-light border border-b-0 border-gray-100">
                     <table className='w-full table-fixed'>
                         <tbody>
                             <tr>
@@ -60,10 +43,9 @@ export default function WaysListComponent(path) {
                                 }
                             </tr>
                         </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
-            }
+            </details>
         </div>
     )
 }

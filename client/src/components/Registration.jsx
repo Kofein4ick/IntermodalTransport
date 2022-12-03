@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { AUTH_ROUTE, HISTORY_ROUTE} from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkIsAuth, registerUser } from '../redux/features/slices/authSlice'
 import { toast } from 'react-toastify'
-import { Link, useNavigate } from 'react-router-dom'
-import { AUTH_ROUTE, HISTORY_ROUTE} from "../utils/consts"
 import '../main.css';
 
 
