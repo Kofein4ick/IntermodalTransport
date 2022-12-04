@@ -19,7 +19,7 @@ function Form() {
     const navigate = useNavigate()
     
     const handleSubmit  = () => {
-        try {
+        try { 
             dispatch(bestWaysUser({from, to}))
             dispatch(allWaysUser({from, to}))
             navigate(HISTORY_ROUTE)
