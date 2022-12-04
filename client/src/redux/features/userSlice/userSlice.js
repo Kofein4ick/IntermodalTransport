@@ -36,11 +36,12 @@ export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWit
 //Получение лучшего маршрута
 export const bestWaysUser = createAsyncThunk(
     'user/bestWaysUser',
-    async({from, to},{rejectWithValue}) => {
+    async({from, to, mode},{rejectWithValue}) => {
         try {
                 const { data } = await axios.post('/user/route', {
                 from,
                 to,
+                mode
             })
             if(data.path){
                 window.localStorage.setItem('paths', data.path)
@@ -54,12 +55,13 @@ export const bestWaysUser = createAsyncThunk(
 //Получение всех маршрутов
 export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
-    async({from, to},{rejectWithValue}) => {
+    async({from, to, mode},{rejectWithValue}) => {
         try {
                 
                 const { data } = await axios.post('/user/routes', {
                 from,
                 to,
+                mode
             })
             return data
         } catch (error) {

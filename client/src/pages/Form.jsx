@@ -14,14 +14,15 @@ function Form() {
 
     const [from, setFrom] = useState('')
     const [to, setTo] = useState('')
+    const [mode, setMode] = useState('')
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     
     const handleSubmit  = () => {
         try { 
-            dispatch(bestWaysUser({from, to}))
-            dispatch(allWaysUser({from, to}))
+            dispatch(bestWaysUser({from, to, mode}))
+            dispatch(allWaysUser({from, to, mode}))
             navigate(SELECT_ROUTE)
         } catch (error) {
             console.log(error)
@@ -48,8 +49,9 @@ function Form() {
                         />
                         <div className="relative">
                             <select className="mx-auto input_form_style">
-                                <option>По времени</option>
-                                <option>По цене</option>
+                                <option value={0} onChange={(e) => setMode(e.target.value)}>По времени</option>
+                                <option value={1} onChange={(e) => setMode(e.target.value)}>По цене</option>
+                                <option value={2} onChange={(e) => setMode(e.target.value)}>По цене и времени</option>
                             </select>
                         </div>
                         <div className= " flex mx-auto space-x-3">
