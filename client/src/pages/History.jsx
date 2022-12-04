@@ -51,9 +51,9 @@ export default function History() {
                             <WaysListComponent path = {[].concat(path[0])} cost = {length} 
                                 componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                         :
-                        <div class="flex justify-center items-center">  
-                            <div class="animate-spin inline-block w-12 h-12 border-4 border-current border-t-transparent text-[#CEB99E] rounded-full" role="status" aria-label="loading">
-                                <span class="sr-only">Loading...</span>
+                        <div className="flex justify-center items-center">  
+                            <div className="animate-spin inline-block w-12 h-12 border-4 border-current border-t-transparent text-[#CEB99E] rounded-full" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
                             </div>
                         </div>
                     }
@@ -69,9 +69,9 @@ export default function History() {
                                             componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                                     ))
                                 :
-                                <div class="flex justify-center items-center">  
-                                    <div class="animate-spin inline-block w-12 h-12 border-4 border-current border-t-transparent text-[#CEB99E] rounded-full" role="status" aria-label="loading">
-                                        <span class="sr-only">Loading...</span>
+                                <div className="flex justify-center items-center">  
+                                    <div className="animate-spin inline-block w-12 h-12 border-4 border-current border-t-transparent text-[#CEB99E] rounded-full" role="status" aria-label="loading">
+                                        <span className="sr-only">Loading...</span>
                                     </div>
                                 </div>
                             }
