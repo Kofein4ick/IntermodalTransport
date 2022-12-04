@@ -45,14 +45,13 @@ export const bestWaysUser = createAsyncThunk(
             if(data.path){
                 window.localStorage.setItem('paths', data.path)
             }
-            return data
+            return (JSON.parse(JSON.stringify(data)))
         } catch (error) {
             throw rejectWithValue(error.response.data.message)
         }
     })
-    
 
-    //Получение всех маршрутов
+//Получение всех маршрутов
 export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
     async({from, to},{rejectWithValue}) => {
@@ -75,11 +74,10 @@ export const userSlice = createSlice({
     reducers: {NewWay: (state) =>{
         state.isProgress = false
         state.isAllProgress = false
-
     }
-        
     },
     extraReducers: {
+
         // Get All
         [getAllUsers.pending]: (state) => {
             state.isLoading = true
@@ -98,13 +96,10 @@ export const userSlice = createSlice({
         },
         [deleteUser.fulfilled]: (state, action) => {
             state.isLoading = false
-            
-            
         },
         [deleteUser.rejected]: (state) => {
             state.isLoading = false
         },
-
 
         //bestWays
         [bestWaysUser.pending]: (state) => {
@@ -115,15 +110,13 @@ export const userSlice = createSlice({
             state.isLoading = true
             state.status = action.payload?.message
             state.length= action.payload?.length
-            state.paths=action.payload?.path
+            state.paths.push(action.payload?.path)
             state.isProgress = true
-          
         },
-        [bestWaysUser.rejected]: (state, action) => {
+        [bestWaysUser.rejected]: (state) => {
             state.isLoading = false
             state.isProgress = true
         },
-
         
         //allWays
         [allWaysUser.pending]: (state) => {
@@ -133,10 +126,10 @@ export const userSlice = createSlice({
         [allWaysUser.fulfilled]: (state, action) => {
             state.isLoading = true
             state.status = action.payload?.message
-            state.allpaths = action.payload?.paths
+            state.allpaths.push(action.payload?.paths)
             state.isAllProgress = true
         },
-        [allWaysUser.rejected]: (state, action) => {
+        [allWaysUser.rejected]: (state) => {
             state.isLoading = false
             state.isAllProgress =true
         },

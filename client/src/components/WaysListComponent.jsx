@@ -1,12 +1,18 @@
-export default function WaysListComponent(path) {
+export default function WaysListComponent({path, cost, componentSubmit}) {
+
+    const from = path[0]
+    const to = path[path.length - 1]
+    const length = path.length
+    const visited = path
 
     return (
-        <div>
-            <details className='w-7/12 mx-auto cursor-pointer max-w-lg'>
+        <div className='flex'>
+            <details className='w-7/12 mx-auto cursor-pointer max-w-lg inline'>
                 <summary className='flex justify-between w-full mx-auto p-8 font-semibold inter-font border-4 border-gray-200 focus:ring-1 focus:ring-gray-200 hover:backdrop-brightness-95'>
                     <div>{path[0]}</div>
                     <div>{path[path.length - 1]}</div>
                     <div className='text-gray-500'>длина пути: {path.length}</div>
+                    <div className='text-gray-500'>стоимость: {cost}</div>
                 </summary>
                 <div className="font-light border border-b-0 border-gray-100">
                     <table className='w-full table-fixed'>
@@ -39,6 +45,7 @@ export default function WaysListComponent(path) {
                     </table>
                 </div>
             </details>
+            <button className="sec_button_form_style" onClick={() => componentSubmit(from, to, visited, length, cost)}>+</button>
         </div>
     )
 }

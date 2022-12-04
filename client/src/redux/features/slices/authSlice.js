@@ -7,7 +7,6 @@ const initialState = {
     status: null,
     isLoading: false,
     role: null
-   
 }
 
 export const loginUser = createAsyncThunk(
@@ -39,9 +38,6 @@ export const checkUser = createAsyncThunk('auth/check', async(_,{rejectWithValue
     }
 })
 
-
-
-
 export const registerUser = createAsyncThunk(
     'auth/registration',
     async({login, password},{rejectWithValue}) => {
@@ -60,8 +56,6 @@ export const registerUser = createAsyncThunk(
         }
     }
 )
-
-
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -89,8 +83,6 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.status = action.payload
         },
-
-       
 
         // GetUser
         [checkUser.pending]: (state) => {

@@ -22,17 +22,11 @@ function Form() {
         try {
             dispatch(bestWaysUser({from, to}))
             dispatch(allWaysUser({from, to}))
-            
+            navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
         }
     }
-    
-    useEffect(() => {
-        if((Loading === true)){
-            navigate(HISTORY_ROUTE)  
-        }
-    },[Loading, navigate])
 
     return ( 
         <div>
@@ -59,8 +53,8 @@ function Form() {
                             </select>
                         </div>
                         <div className= " flex mx-auto space-x-3">
-                        <input className=" input_style" type="text" placeholder="Города"/>
-                        <button className="sec_button_form_style ">+</button>
+                            <input className=" input_style" type="text" placeholder="Города"/>
+                            <button className="sec_button_form_style ">+</button>
                         </div>
                         <button  onClick={handleSubmit} className="button_form_style">Создать</button>
                     </div> 
