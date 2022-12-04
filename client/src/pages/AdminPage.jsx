@@ -10,7 +10,7 @@ export default function AdminPage() {
     const dispatch = useDispatch()
     const users = useSelector((state) => state.user.users)
 
-    useEffect(()=> {
+    useEffect(()=> { 
     dispatch(getAllUsers())
     },[dispatch])
 
