@@ -4,7 +4,8 @@ import History from './pages/History';
 import Form from './pages/Form';
 import NoLogHistory from './pages/NoLoginHistory';
 import AdminPage from './pages/AdminPage';
-import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE} from "./utils/consts"
+import WaySelectPage from './pages/WaySelectPage';
+import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE, SELECT_ROUTE} from "./utils/consts"
 
 export const authRoutes = [
 
@@ -52,6 +53,9 @@ export const publicRoutes = [
     },
 
 
-    
+    {
+        path: SELECT_ROUTE,
+        Component: WaySelectPage
+    }
 
 ]

@@ -1,6 +1,6 @@
 import { useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { HISTORY_ROUTE} from '../utils/consts'
+import { SELECT_ROUTE} from '../utils/consts'
 import { useDispatch, useSelector } from 'react-redux'
 import { bestWaysUser, allWaysUser } from '../redux/features/userSlice/userSlice'
 import Header from '../components/Header'
@@ -22,7 +22,7 @@ function Form() {
         try { 
             dispatch(bestWaysUser({from, to}))
             dispatch(allWaysUser({from, to}))
-            navigate(HISTORY_ROUTE)
+            navigate(SELECT_ROUTE)
         } catch (error) {
             console.log(error)
         }
