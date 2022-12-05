@@ -38,6 +38,7 @@ export const bestWaysUser = createAsyncThunk(
     'user/bestWaysUser',
     async({from, to, mode},{rejectWithValue}) => {
         try {
+                console.log("Слайс best принял: ", {from, to, mode})
                 const { data } = await axios.post('/user/route', {
                 from,
                 to,
@@ -57,7 +58,7 @@ export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
     async({from, to, mode},{rejectWithValue}) => {
         try {
-                
+                console.log("Слайс all принял: ", {from, to, mode})
                 const { data } = await axios.post('/user/routes', {
                 from,
                 to,

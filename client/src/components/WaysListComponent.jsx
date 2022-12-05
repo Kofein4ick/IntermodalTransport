@@ -1,4 +1,4 @@
-export default function WaysListComponent({path, cost, componentSubmit}) {
+export default function WaysListComponent({path, cost, flag, id, componentSubmit}) {
 
     const from = path[0]
     const to = path[path.length - 1]
@@ -45,7 +45,11 @@ export default function WaysListComponent({path, cost, componentSubmit}) {
                     </table>
                 </div>
             </details>
-            <button className="sec_button_form_style" onClick={() => componentSubmit(from, to, visited, length, cost)}>+</button>
+            <button className="sec_button_form_style" onClick={() => componentSubmit(from, to, visited, length, cost, id)}>
+                {
+                    (flag) ? '+' : '-'
+                }
+            </button>
         </div>
     )
 }

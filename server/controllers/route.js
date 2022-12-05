@@ -2,7 +2,6 @@ const { SavedRoute } = require('../models/models')
 
 const saveRoute = async (req, res) => {
     try {
-
         //получение данных для сохранения маршрута
         const {id} = req.user
         let {from, to, visited, length, cost} = req.body

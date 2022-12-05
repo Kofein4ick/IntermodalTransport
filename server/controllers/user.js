@@ -41,7 +41,9 @@ const deleteUser = async (req, res) => {
 
 const getBestRoute = async (req, res) => {
     try {
+        console.log("Сервер  best")
         const {from, to, mode} = req.body
+        console.log("Сервер best принял", {from, to, mode})
 
         //если город отправки и назначения это один и тот же город
         if (from === to) {
@@ -145,9 +147,10 @@ const getBestRoute = async (req, res) => {
 
 const getAllRoutes = async (req, res) => {
     try {
+        console.log("Сервер  all")
         //определение индекса города отправки и назначения
         const {from, to, mode} = req.body
-        
+        console.log("Сервер all принял: ", {from, to, mode})
         //если город отправки и назначения это один и тот же город
         if (from === to) {
             return res.status(200).json({

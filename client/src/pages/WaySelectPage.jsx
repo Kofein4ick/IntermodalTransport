@@ -65,7 +65,7 @@ export default function WaySelectPage() {
                                 (isLoading2) 
                                 ? 
                                     allpath[0]?.map((path) => (
-                                        <WaysListComponent path = {path.path} cost = {path.length} 
+                                        <WaysListComponent path = {path.path} cost = {path.length} flag = {1}
                                             componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                                     ))
                                 :

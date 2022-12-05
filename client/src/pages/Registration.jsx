@@ -20,7 +20,7 @@ function Registration() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!load) toast(status, {
+        if(!load) toast.info(status, {
             position: toast.POSITION.BOTTOM_RIGHT}) 
         if(isAuth) navigate(HISTORY_ROUTE)
     }, [isAuth.status,load])
