@@ -117,9 +117,9 @@ export const authSlice = createSlice({
 export const checkIsAuth = (state) => 
     Boolean(state.auth.token)
 
-    export const checkIsRole = (state) => {
-        Boolean(state.auth.role === 'ADMIN')
-    }
+export const checkIsRole = (state) => {
+    Boolean(state.auth.role === 'ADMIN')
+}
 
 
 export const {logOut} = authSlice.actions

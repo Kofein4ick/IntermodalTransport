@@ -97,7 +97,7 @@ export const userSlice = createSlice({
         [deleteUser.pending]: (state) => {
             state.isLoading = true
         },
-        [deleteUser.fulfilled]: (state, action) => {
+        [deleteUser.fulfilled]: (state) => {
             state.isLoading = false
         },
         [deleteUser.rejected]: (state) => {
