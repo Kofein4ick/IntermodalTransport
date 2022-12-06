@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkIsAuth, loginUser } from '../redux/features/slices/authSlice'
-import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { REG_ROUTE, HISTORY_ROUTE } from "../utils/consts"
+import {  toast } from 'react-toastify';
 import '../main.css'
 
 //Страница авторизации
@@ -13,19 +13,20 @@ function Authorization() {
     const [password, setPassword] = useState('')
 
     const { status } = useSelector((state) => state.auth)
+    const load = useSelector((state) => state.auth.isLoading)
     const isAuth = useSelector(checkIsAuth)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (status) toast(status)
-        if (isAuth) navigate(HISTORY_ROUTE)
-    }, [status, isAuth, navigate])
+        if(!load) {toast.info(status, {
+            position: toast.POSITION.BOTTOM_RIGHT})}
+        if(isAuth) navigate(HISTORY_ROUTE)
+    }, [ isAuth,status, load])
     
     const handleSubmit  = () => {
         try {
             dispatch(loginUser({ login, password }))
-            navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
         }

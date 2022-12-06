@@ -23,7 +23,9 @@ export default function Header() {
         dispatch(logOut())
         window.localStorage.removeItem('token')
         navigate(HISTORY_ROUTE)
-        toast('Вы вышли из системы')
+        toast.info('Вы вышли из аккаунта', {
+            position: toast.POSITION.BOTTOM_RIGHT
+        })
     }
 
     return (

@@ -6,6 +6,7 @@ const initialState = {
     paths:  [],
     allpaths: [],
     length: null,
+    cost: null,
     isLoading: false,
     isProgress: false,
     isAllProgress: false,
@@ -30,37 +31,36 @@ export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWit
         }catch(error){
             throw rejectWithValue(error.response.data.message)
         }
-    
 })
 
 //Получение лучшего маршрута
 export const bestWaysUser = createAsyncThunk(
     'user/bestWaysUser',
-    async({from, to},{rejectWithValue}) => {
+    async({from, to, mode},{rejectWithValue}) => {
         try {
                 const { data } = await axios.post('/user/route', {
                 from,
                 to,
+                mode
             })
             if(data.path){
                 window.localStorage.setItem('paths', data.path)
             }
-            return data
+            return (JSON.parse(JSON.stringify(data)))
         } catch (error) {
             throw rejectWithValue(error.response.data.message)
         }
     })
-    
 
-    //Получение всех маршрутов
+//Получение всех маршрутов
 export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
-    async({from, to},{rejectWithValue}) => {
+    async({from, to, mode},{rejectWithValue}) => {
         try {
-                
                 const { data } = await axios.post('/user/routes', {
                 from,
                 to,
+                mode
             })
             return data
         } catch (error) {
@@ -75,11 +75,13 @@ export const userSlice = createSlice({
     reducers: {NewWay: (state) =>{
         state.isProgress = false
         state.isAllProgress = false
-
+        state.allpaths = []
+        state.paths = []
+        state.length = null
     }
-        
     },
     extraReducers: {
+
         // Get All
         [getAllUsers.pending]: (state) => {
             state.isLoading = true
@@ -96,15 +98,12 @@ export const userSlice = createSlice({
         [deleteUser.pending]: (state) => {
             state.isLoading = true
         },
-        [deleteUser.fulfilled]: (state, action) => {
+        [deleteUser.fulfilled]: (state) => {
             state.isLoading = false
-            
-            
         },
         [deleteUser.rejected]: (state) => {
             state.isLoading = false
         },
-
 
         //bestWays
         [bestWaysUser.pending]: (state) => {
@@ -115,15 +114,14 @@ export const userSlice = createSlice({
             state.isLoading = true
             state.status = action.payload?.message
             state.length= action.payload?.length
-            state.paths=action.payload?.path
+            state.cost= action.payload?.cost
+            state.paths.push(action.payload?.path)
             state.isProgress = true
-          
         },
-        [bestWaysUser.rejected]: (state, action) => {
+        [bestWaysUser.rejected]: (state) => {
             state.isLoading = false
             state.isProgress = true
         },
-
         
         //allWays
         [allWaysUser.pending]: (state) => {
@@ -133,10 +131,10 @@ export const userSlice = createSlice({
         [allWaysUser.fulfilled]: (state, action) => {
             state.isLoading = true
             state.status = action.payload?.message
-            state.allpaths = action.payload?.paths
+            state.allpaths.push(action.payload?.paths)
             state.isAllProgress = true
         },
-        [allWaysUser.rejected]: (state, action) => {
+        [allWaysUser.rejected]: (state) => {
             state.isLoading = false
             state.isAllProgress =true
         },

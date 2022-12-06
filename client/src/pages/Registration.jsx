@@ -14,19 +14,20 @@ function Registration() {
     const [password, setPassword] = useState('')
 
     const { status } = useSelector((state) => state.auth)
+    const load = useSelector((state) => state.auth.isLoading)
     const isAuth = useSelector(checkIsAuth)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (status) toast(status)
-        if (isAuth) navigate(HISTORY_ROUTE)
-    }, [status, isAuth, navigate])
+        if(!load) toast.info(status, {
+            position: toast.POSITION.BOTTOM_RIGHT}) 
+        if(isAuth) navigate(HISTORY_ROUTE)
+    }, [isAuth.status,load])
 
     const handleSubmit  = () => {
         try {
             dispatch(registerUser({ login, password }))
-            navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
         }

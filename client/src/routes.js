@@ -1,34 +1,25 @@
-import Registration from './components/Registration';
-import Authorization from './components/Authorization';
-import History from './components/History';
-import Form from './components/Form';
-import NoLogHistory from './components/NoLoginHistory';
-import AdminPage from './components/AdminPage';
-import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE} from "./utils/consts"
+import Registration from './pages/Registration';
+import Authorization from './pages/Authorization';
+import History from './pages/History';
+import Form from './pages/Form';
+import NoLogHistory from './pages/NoLoginHistory';
+import AdminPage from './pages/AdminPage';
+import WaySelectPage from './pages/WaySelectPage';
+import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE, SELECT_ROUTE} from "./utils/consts"
 
 export const authRoutes = [
-
-
     {
         path: HISTORY_ROUTE,
         Component: History
     }
-
-    
 ]
 
 export const adminRoutes = [
-
-
     {
         path: ADMIN_ROUTE,
         Component: AdminPage
     }
-
-    
 ]
-
-
 
 export const publicRoutes = [
     {
@@ -51,7 +42,8 @@ export const publicRoutes = [
         Component: Form
     },
 
-
-    
-
+    {
+        path: SELECT_ROUTE,
+        Component: WaySelectPage
+    }
 ]

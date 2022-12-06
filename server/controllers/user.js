@@ -147,7 +147,7 @@ const getAllRoutes = async (req, res) => {
     try {
         //определение индекса города отправки и назначения
         const {from, to, mode} = req.body
-        
+
         //если город отправки и назначения это один и тот же город
         if (from === to) {
             return res.status(200).json({
