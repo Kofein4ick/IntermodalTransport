@@ -2,14 +2,14 @@
 #include <pqxx/pqxx>
 
 
-//Установка соседа
+//РЈСЃС‚Р°РЅРѕРІРєР° СЃРѕСЃРµРґР°
 void Node::set_neighbors(Node* neighbor, double distance) {
     neigbors_nodes new_node;
     new_node.neighbor = neighbor;
     new_node.distance = distance;
     this->neighbors.push_back(new_node);
 };
-//Конструктор node
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ node
 Node::Node(unsigned int in_index) {
     this->f = 0;
     this->g = 0;
@@ -19,7 +19,7 @@ Node::Node(unsigned int in_index) {
 };
 
 Node::~Node() {};
-//Поиск вершины по индексу
+//РџРѕРёСЃРє РІРµСЂС€РёРЅС‹ РїРѕ РёРЅРґРµРєСЃСѓ
 int Graph::find_node(unsigned int index) {
     for (Node el : this->nodes) {
         if (el.index == index) {
@@ -28,19 +28,20 @@ int Graph::find_node(unsigned int index) {
     }
     return -1;
 };
-//Конструктор graph
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ graph
 Graph::Graph(unsigned int mode) {
     unsigned num_verts;
     unsigned from, to;
     double weight;
-    std::string connectionString = "host=localhost port=5432 dbname=trpo user=postgres password =admin";
+    std::string connectionString = "host=localhost port=5432 dbname=trpo user=postgres password =admin";//РЈСЃС‚РЅРѕРІРєР° РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р±Рґ
     try
     {
-        pqxx::connection connectionObject(connectionString.c_str());
+        pqxx::connection connectionObject(connectionString.c_str());//РЎРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Рґ
         pqxx::work worker(connectionObject);
-        pqxx::result response = worker.exec("SELECT * FROM cities ORDER BY id");
+        pqxx::result response = worker.exec("SELECT * FROM cities ORDER BY id");//Р—Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… РіРѕСЂРѕРґРѕРІ
         num_verts = response.size();
         this->g_num_verts = num_verts;
+        //Р—Р°РЅРµСЃРµРЅРёРµ РІРµСЂС€РёРЅ РІ СЃРїРёСЃРѕРє
         for (size_t i = 0; i < response.size(); i++)
         {
             from = atoi(response[i][0].c_str()) - 1;
@@ -48,62 +49,62 @@ Graph::Graph(unsigned int mode) {
             this->nodes.push_back(in);
         }
 
-
+        //РњР°С‚СЂРёС†Р° СЌРІСЂРёСЃС‚РёРє
         this->graph_matrix = std::vector<std::vector<weight_t>>(this->g_num_verts, std::vector<weight_t>(this->g_num_verts, MAX));
-        //обнуление всего графа
+        //РѕР±РЅСѓР»РµРЅРёРµ РІСЃРµРіРѕ РіСЂР°С„Р°
         for (int i = 0; i < g_num_verts; i++)
             for (int j = 0; j < g_num_verts; j++)
                 this->graph_matrix[i][j] = 0;
 
-        response = worker.exec("SELECT * FROM routes ORDER BY id");
+        response = worker.exec("SELECT * FROM routes ORDER BY id");//Р—Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… РїСѓС‚РµР№
         int i = 0;
         for (size_t k = 0; k < response.size(); k++)
         {
-            from = atoi(response[k][1].c_str()) - 1;
-            to = atoi(response[k][2].c_str()) - 1;
-            if (mode == 2)
+            from = atoi(response[k][1].c_str()) - 1;//Р’РµСЂС€РёРЅР° РѕС‚РїСЂР°РІР»РµРЅРёСЏ
+            to = atoi(response[k][2].c_str()) - 1;//РљРѕРЅРµС‡РЅР°СЏ РІРµСЂС€РёРЅР°
+            if (mode == 2)//Р РµР¶РёРј 2 РїР°СЂР°РјРµС‚СЂРѕРІ
                 weight = atof(response[k][7].c_str());
-            else
+            else//РџР°СЂР°РјРµС‚СЂ СЂР°СЃСЃС‚РѕСЏРЅРёСЏ; РџР°СЂР°РјРµС‚СЂ СЃС‚РѕРёРјРѕСЃС‚Рё
                 weight = (mode == 0) ? atoi(response[k][3].c_str()) : atoi(response[k][4].c_str());
 
-            this->add_edge(from, to, weight);//Внесение в матрицу
-            if (this->nodes[i].index == from) {//Если вершина уже рассматривается
-                int neig = this->find_node(to);//Получаем индекс соседа в массиве
-                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем соседа
+            this->add_edge(from, to, weight);//Р’РЅРµСЃРµРЅРёРµ РІ РјР°С‚СЂРёС†Сѓ
+            if (this->nodes[i].index == from) {//Р•СЃР»Рё РІРµСЂС€РёРЅР° СѓР¶Рµ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµС‚СЃСЏ
+                int neig = this->find_node(to);//РџРѕР»СѓС‡Р°РµРј РёРЅРґРµРєСЃ СЃРѕСЃРµРґР° РІ РјР°СЃСЃРёРІРµ
+                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Р”РѕР±Р°РІР»СЏРµРј СЃРѕСЃРµРґР°
 
             }
             else {
-                //Подводим индекс
+                //РџРѕРґРІРѕРґРёРј РёРЅРґРµРєСЃ РґРѕ РІРµСЂРёС€РЅС‹ РѕС‚РїСЂР°РІР»РµРЅРёСЏ
                 if (this->nodes[i].index < from)
                     while (this->nodes[i].index != from)
                         i++;
                 else
                     while (this->nodes[i].index != from)
                         i--;
-                int neig = this->find_node(to);//Получаем индекс вершины соседа
-                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Добавляем
+                int neig = this->find_node(to);//РџРѕР»СѓС‡Р°РµРј РёРЅРґРµРєСЃ РІРµСЂС€РёРЅС‹ СЃРѕСЃРµРґР°
+                this->nodes[i].set_neighbors(&this->nodes[neig], weight);//Р”РѕР±Р°РІР»СЏРµРј РІРµСЂС€РёРЅСѓ
             }
 
         }
 
-        connectionObject.close();
+        connectionObject.close();//Р—Р°РєСЂС‹С‚РёРµ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р±Рґ
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;//Р’С‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёСЏ РѕР± РѕС€РёР±РєРµ
     }
     for (unsigned i = 0; i < this->g_num_verts; ++i)
-        this->graph_matrix[i][i] = 0;
+        this->graph_matrix[i][i] = 0;//РћР±РЅСѓР»РµРЅРёРµ РґРёР°РіРѕРЅР°Р»Рё
 
-    set_heuristic_matrix();//Заполнение матрицы эвристик
+    set_heuristic_matrix();//Р—Р°РїРѕР»РЅРµРЅРёРµ РјР°С‚СЂРёС†С‹ СЌРІСЂРёСЃС‚РёРє
 };
 Graph::~Graph() {};
 
-void Graph::add_edge(unsigned int from, unsigned int to, weight_t weight) { // Добавление ребра
+void Graph::add_edge(unsigned int from, unsigned int to, weight_t weight) { // Р”РѕР±Р°РІР»РµРЅРёРµ СЂРµР±СЂР°
     graph_matrix[from][to] = weight;
 };
 
-void Graph::set_heuristic_matrix() { // Подсчет всех эвристик, через перебор всех путей по неравенству треугольника
+void Graph::set_heuristic_matrix() { // РџРѕРґСЃС‡РµС‚ РІСЃРµС… СЌРІСЂРёСЃС‚РёРє, С‡РµСЂРµР· РїРµСЂРµР±РѕСЂ РІСЃРµС… РїСѓС‚РµР№ РїРѕ РЅРµСЂР°РІРµРЅСЃС‚РІСѓ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°
     heuristic_matrix = graph_matrix;
     for (size_t k = 0; k < g_num_verts; k++)
         for (size_t i = 0; i < g_num_verts; i++)
@@ -118,56 +119,57 @@ void Graph::set_heuristic_matrix() { // Подсчет всех эвристик, через перебор все
 };
 
 
-//Быстрая сортировка
+//Р‘С‹СЃС‚СЂР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР°
 short Search(std::deque<Node*>& Array2, unsigned int low, unsigned int high);
 short Qsort(std::deque<Node*>& Array2, unsigned int low, unsigned int high);
-//Поиск в деке
+//РџРѕРёСЃРє РІ РґРµРєРµ
 bool search_in_deque(std::deque<Node*> where, unsigned int index);
-//Восстановление пути
+//Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїСѓС‚Рё
 std::vector<Node*> reconstruct_path(Node* start, Node* goal);
 
 std::vector<Node*> Graph::A_star(Node* start, Node* goal) {
-    std::deque<Node*> closedset;//Список просмотренных вершин
-    std::deque<Node*> openset;//Список рассматриваемых вершин
+    std::deque<Node*> closedset;//РЎРїРёСЃРѕРє РїСЂРѕСЃРјРѕС‚СЂРµРЅРЅС‹С… РІРµСЂС€РёРЅ
+    std::deque<Node*> openset;//РЎРїРёСЃРѕРє СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹С… РІРµСЂС€РёРЅ
     openset.push_back(start);
 
+    //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ СЃС‚Р°СЂС‚РѕРІРѕР№ РІРµСЂС€РёРЅС‹
     start->g = 0;
     start->h = this->heuristic_matrix[start->index][goal->index];
     start->f = start->g + start->h;
 
     while (!openset.empty()) {
-        Qsort(openset, 0, openset.size() - 1);//Сортировка по f
+        Qsort(openset, 0, openset.size() - 1);//РЎРѕСЂС‚РёСЂРѕРІРєР° РїРѕ f
         Node* x = openset.front();
         if (x->index == goal->index)
             return reconstruct_path(start, goal);
         openset.pop_front();
         closedset.push_back(x);
         int i = 0;
-        for (i = 0; i < x->neighbors.size(); i++) {//Просматриваем соседей текущей вершины
-            if (search_in_deque(closedset, x->neighbors[i].neighbor->index))//Пропускаем если уже просмотрены
+        for (i = 0; i < x->neighbors.size(); i++) {//РџСЂРѕСЃРјР°С‚СЂРёРІР°РµРј СЃРѕСЃРµРґРµР№ С‚РµРєСѓС‰РµР№ РІРµСЂС€РёРЅС‹
+            if (search_in_deque(closedset, x->neighbors[i].neighbor->index))//РџСЂРѕРїСѓСЃРєР°РµРј РµСЃР»Рё СѓР¶Рµ РїСЂРѕСЃРјРѕС‚СЂРµРЅС‹
                 continue;
             bool tentative_is_better;
-            double tentative_g_score = x->g + x->neighbors[i].distance;//Считаем стоимость
-            if (!search_in_deque(openset, x->neighbors[i].neighbor->index)) { // Если сосед x ещё не в списке рассматриваемых - добавим его туда
+            double tentative_g_score = x->g + x->neighbors[i].distance;//РЎС‡РёС‚Р°РµРј СЃС‚РѕРёРјРѕСЃС‚СЊ
+            if (!search_in_deque(openset, x->neighbors[i].neighbor->index)) { // Р•СЃР»Рё СЃРѕСЃРµРґ x РµС‰С‘ РЅРµ РІ СЃРїРёСЃРєРµ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹С… - РґРѕР±Р°РІРёРј РµРіРѕ С‚СѓРґР°
                 openset.push_back(x->neighbors[i].neighbor);
                 tentative_is_better = true;
             }//if
-            else { // Сосед(у) был в открытом списке, а значит уже известны его g(y), h(y) и f(y)
+            else { // РЎРѕСЃРµРґ(Сѓ) Р±С‹Р» РІ РѕС‚РєСЂС‹С‚РѕРј СЃРїРёСЃРєРµ, Р° Р·РЅР°С‡РёС‚ СѓР¶Рµ РёР·РІРµСЃС‚РЅС‹ РµРіРѕ g(y), h(y) Рё f(y)
                 if (tentative_g_score < x->neighbors[i].neighbor->g) {
-                    // Вычисленная g(y) через x оказалась меньше, а значит нужно будет обновить  g(y), h(y), f(y)
+                    // Р’С‹С‡РёСЃР»РµРЅРЅР°СЏ g(y) С‡РµСЂРµР· x РѕРєР°Р·Р°Р»Р°СЃСЊ РјРµРЅСЊС€Рµ, Р° Р·РЅР°С‡РёС‚ РЅСѓР¶РЅРѕ Р±СѓРґРµС‚ РѕР±РЅРѕРІРёС‚СЊ  g(y), h(y), f(y)
                     tentative_is_better = true;
                 }//if
                 else {
-                    // Вычисленная g(y) через x оказалась больше, чем имеющаяся в openset. 
-                    // Это означает, что из вершины x путь через этого соседа дороже
-                    // т.е. существует менее дорогой маршрут, пролегающий через этого соседа (из какой-то другой вершины, не из x)
-                    // Поэтому данного соседа мы игнорируем
+                    // Р’С‹С‡РёСЃР»РµРЅРЅР°СЏ g(y) С‡РµСЂРµР· x РѕРєР°Р·Р°Р»Р°СЃСЊ Р±РѕР»СЊС€Рµ, С‡РµРј РёРјРµСЋС‰Р°СЏСЃСЏ РІ openset. 
+                    // Р­С‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РёР· РІРµСЂС€РёРЅС‹ x РїСѓС‚СЊ С‡РµСЂРµР· СЌС‚РѕРіРѕ СЃРѕСЃРµРґР° РґРѕСЂРѕР¶Рµ
+                    // С‚.Рµ. СЃСѓС‰РµСЃС‚РІСѓРµС‚ РјРµРЅРµРµ РґРѕСЂРѕРіРѕР№ РјР°СЂС€СЂСѓС‚, РїСЂРѕР»РµРіР°СЋС‰РёР№ С‡РµСЂРµР· СЌС‚РѕРіРѕ СЃРѕСЃРµРґР° (РёР· РєР°РєРѕР№-С‚Рѕ РґСЂСѓРіРѕР№ РІРµСЂС€РёРЅС‹, РЅРµ РёР· x)
+                    // РџРѕСЌС‚РѕРјСѓ РґР°РЅРЅРѕРіРѕ СЃРѕСЃРµРґР° РјС‹ РёРіРЅРѕСЂРёСЂСѓРµРј
                     tentative_is_better = false;
                 }//else
             }//else
-             // Обновление свойств соседа. 
+             // РћР±РЅРѕРІР»РµРЅРёРµ СЃРІРѕР№СЃС‚РІ СЃРѕСЃРµРґР°. 
             if (tentative_is_better == true) {
-                x->neighbors[i].neighbor->prev = x;//Вершина с которой мы пришли. Используется для реконструкции пути.
+                x->neighbors[i].neighbor->prev = x;//Р’РµСЂС€РёРЅР° СЃ РєРѕС‚РѕСЂРѕР№ РјС‹ РїСЂРёС€Р»Рё. РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЂРµРєРѕРЅСЃС‚СЂСѓРєС†РёРё РїСѓС‚Рё.
                 x->neighbors[i].neighbor->cost_prev = x->neighbors[i].distance;
                 x->neighbors[i].neighbor->g = tentative_g_score;
                 x->neighbors[i].neighbor->h = this->heuristic_matrix[x->neighbors[i].neighbor->index][goal->index];;
@@ -180,7 +182,7 @@ std::vector<Node*> Graph::A_star(Node* start, Node* goal) {
     std::vector<Node*> er;
     return er;
 };//A_star
-//Восстановление пути
+//Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїСѓС‚Рё
 std::vector<Node*> reconstruct_path(Node* start, Node* goal) {
     std::vector<Node*> path;
     Node* current_node = goal;
@@ -191,43 +193,43 @@ std::vector<Node*> reconstruct_path(Node* start, Node* goal) {
     return path;
 }
 
-//Быстрая сортировка
+//Р‘С‹СЃС‚СЂР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР°
 short Qsort(std::deque<Node*>& Array2, unsigned int low, unsigned int high)
 {
     unsigned int p;
     if (low < high)
     {
-        p = Search(Array2, low, high);//Сортировка и поиск опорного элемента
-        Qsort(Array2, low, p);//Сортировка левой половины
-        Qsort(Array2, p + 1, high);//Сортировка правой половины
+        p = Search(Array2, low, high);//РЎРѕСЂС‚РёСЂРѕРІРєР° Рё РїРѕРёСЃРє РѕРїРѕСЂРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+        Qsort(Array2, low, p);//РЎРѕСЂС‚РёСЂРѕРІРєР° Р»РµРІРѕР№ РїРѕР»РѕРІРёРЅС‹
+        Qsort(Array2, p + 1, high);//РЎРѕСЂС‚РёСЂРѕРІРєР° РїСЂР°РІРѕР№ РїРѕР»РѕРІРёРЅС‹
     }
     return 0;
 }
 short Search(std::deque<Node*>& Array2, unsigned int low, unsigned int high)
 {
-    double p = Array2[(high + low) / 2]->f;//Опорный элемент
-    unsigned int i = low - 1;//Нижняя граница
-    unsigned int j = high + 1;//Верхняя граница
+    double p = Array2[(high + low) / 2]->f;//РћРїРѕСЂРЅС‹Р№ СЌР»РµРјРµРЅС‚
+    unsigned int i = low - 1;//РќРёР¶РЅСЏСЏ РіСЂР°РЅРёС†Р°
+    unsigned int j = high + 1;//Р’РµСЂС…РЅСЏСЏ РіСЂР°РЅРёС†Р°
     Node* temp;
     for (unsigned int q = 0;; q++)
     {
         do
             i++;
-        while (Array2[i]->f < p);//ищем элемент справа больше равный опорному
+        while (Array2[i]->f < p);//РёС‰РµРј СЌР»РµРјРµРЅС‚ СЃРїСЂР°РІР° Р±РѕР»СЊС€Рµ СЂР°РІРЅС‹Р№ РѕРїРѕСЂРЅРѕРјСѓ
         do
             j--;
-        while (Array2[j]->f > p);//ищем элемент слева меньше равный опорному
-        if (i >= j)//если счетчики совпали
+        while (Array2[j]->f > p);//РёС‰РµРј СЌР»РµРјРµРЅС‚ СЃР»РµРІР° РјРµРЅСЊС€Рµ СЂР°РІРЅС‹Р№ РѕРїРѕСЂРЅРѕРјСѓ
+        if (i >= j)//РµСЃР»Рё СЃС‡РµС‚С‡РёРєРё СЃРѕРІРїР°Р»Рё
             return j;
-        if (Array2[i]->f == Array2[j]->f)//пропуск равных чисел
+        if (Array2[i]->f == Array2[j]->f)//РїСЂРѕРїСѓСЃРє СЂР°РІРЅС‹С… С‡РёСЃРµР»
             continue;
-        //Перестановка
+        //РџРµСЂРµСЃС‚Р°РЅРѕРІРєР°
         temp = Array2[i];
         Array2[i] = Array2[j];
         Array2[j] = temp;
     }
 }
-//Поиск в деке
+//РџРѕРёСЃРє РІ РґРµРєРµ
 bool search_in_deque(std::deque<Node*> where, unsigned int index) {
     bool res = false;
     for (Node* el : where) {
