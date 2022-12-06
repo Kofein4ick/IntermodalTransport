@@ -1,40 +1,35 @@
 #include "Graph.h"
 #include <algorithm>
 
-int main() {
-	system("chcp 65001");
-	std::vector<Node*> path;//РќР°Р№РґРµРЅРЅС‹Р№ РїСѓС‚СЊ
-	unsigned int mode = 0;//Р’С‹Р±Р»РѕСЂ СЂР°СЃСЃС‚РѕСЏРЅРёСЏ РёР»Рё СЃС‚РѕРёРјРѕСЃС‚Рё
-	std::cout << "Р Р°СЃСЃС‚РѕСЏРЅРёРµ/РЎС‚РѕРёРјРѕСЃС‚СЊ:"; std::cin >> mode;
-	Graph graph(mode);//РЎРѕР·РґР°РЅРёРµ Рё Р·Р°РїРѕР»РЅРµРЅРёРµ РіСЂР°С„Р°
-	unsigned int in_s=0;//РЎС‚Р°СЂС‚РѕРІР°СЏ РІРµСЂС€РёРЅР°
-	unsigned int in_g=0;//РљРѕРЅРµС‡РЅР°СЏ РІРµСЂС€РёРЅР°
-	for (Node el : graph.nodes) {//Р¦РёРєР» РІС‹РІРѕРґР° СЃРїРёСЃРєР° СЃРјРµР¶РЅРѕСЃС‚Рё(РїСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё Р·Р°РїРѕР»РЅРµРЅРѕСЃС‚Рё)
-		std::cout << el.index+1 << ": ";
-		for (auto el2 : el.neighbors) {
-			std::cout << el2.neighbor->index+1 << " ";
-		}
-		std::cout << std::endl;
+/*
+* Первый параметр - индекс города отправки
+* Второй параметр - индекс города назначения
+* Третий параметр - критерии поиска
+*/
+int main(int argc, char* argv[]) {
+	std::vector<Node*> path;//Найденный путь
+	unsigned int mode = atoi(argv[3]);//Выбор расстояния или стоимости
+	Graph graph(mode);//Создание и заполнение графа
+	unsigned int in_s = atoi(argv[1]);//Стартовая вершина
+	unsigned int in_g = atoi(argv[2]);//Конечная вершина
 
-	}
-	std::cout << "\nРЎС‚Р°СЂС‚:"; std::cin >> in_s;
-	std::cout << "Р¤РёРЅРёС€:"; std::cin >> in_g;
-	Node* start= &graph.nodes[in_s-1];
-	Node* goal = &graph.nodes[in_g-1];
-	path = graph.A_star(start,goal);
+	Node* start = &graph.nodes[in_s - 1];
+	Node* goal = &graph.nodes[in_g - 1];
+	path = graph.A_star(start, goal);
+
 	if (path.empty()) {
-		std::cout << "РџСѓС‚СЊ РЅРµ РЅР°Р№РґРµРЅ\n";
-		system("pause");
 		return 0;
 	}
 	std::reverse(path.begin(), path.end());
-	int cost=0;
-	std::cout << "РљСЂР°С‚С‡Р°Р№С€РёР№ РїСѓС‚СЊ:";
+	double cost = 0, j = 0;
 	for (Node* el : path) {
-		std::cout << el->index+1 << " ";
+		if (j == path.size() - 1)
+			std::cout << el->index + 1;
+		else
+			std::cout << el->index + 1 << " ";
 		cost = el->cost_prev + cost;
+		j++;
 	}
-	std::cout << "\nРЎС‚РѕРёРјРѕСЃС‚СЊ: " << cost << std::endl;
-	system("pause");
+	std::cout << "Length" << cost;
 	return 0;
 }
