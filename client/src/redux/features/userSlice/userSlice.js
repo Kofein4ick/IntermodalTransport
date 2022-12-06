@@ -6,6 +6,7 @@ const initialState = {
     paths:  [],
     allpaths: [],
     length: null,
+    cost: null,
     isLoading: false,
     isProgress: false,
     isAllProgress: false,
@@ -30,7 +31,6 @@ export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWit
         }catch(error){
             throw rejectWithValue(error.response.data.message)
         }
-    
 })
 
 //Получение лучшего маршрута
@@ -38,7 +38,6 @@ export const bestWaysUser = createAsyncThunk(
     'user/bestWaysUser',
     async({from, to, mode},{rejectWithValue}) => {
         try {
-                console.log("Слайс best принял: ", {from, to, mode})
                 const { data } = await axios.post('/user/route', {
                 from,
                 to,
@@ -58,7 +57,6 @@ export const allWaysUser = createAsyncThunk(
     'user/allWaysUser',
     async({from, to, mode},{rejectWithValue}) => {
         try {
-                console.log("Слайс all принял: ", {from, to, mode})
                 const { data } = await axios.post('/user/routes', {
                 from,
                 to,
@@ -77,6 +75,9 @@ export const userSlice = createSlice({
     reducers: {NewWay: (state) =>{
         state.isProgress = false
         state.isAllProgress = false
+        state.allpaths = []
+        state.paths = []
+        state.length = null
     }
     },
     extraReducers: {
@@ -113,6 +114,7 @@ export const userSlice = createSlice({
             state.isLoading = true
             state.status = action.payload?.message
             state.length= action.payload?.length
+            state.cost= action.payload?.cost
             state.paths.push(action.payload?.path)
             state.isProgress = true
         },

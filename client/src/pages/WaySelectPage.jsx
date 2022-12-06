@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FORM_ROUTE } from "../utils/consts"
+import { HISTORY_ROUTE } from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUser } from '../redux/features/slices/authSlice'
 import { NewWay } from '../redux/features/userSlice/userSlice'
@@ -10,30 +10,33 @@ import Header from '../components/Header'
 import WaysListComponent from '../components/WaysListComponent'
 
 
-//Страница истории для авторизованых
+//Страница выбора путей
 export default function WaySelectPage() {
 
     const dispatch = useDispatch()
 
     const isLoading1 = useSelector((state) => state.user.isProgress)
     const path = useSelector((state) => state.user.paths)
-    const length = useSelector((state) => state.user.length) 
+    const length = useSelector((state) => state.user.length)
+    const cost = useSelector((state) => state.user.cost)
     const isLoading2 = useSelector((state) => state.user.isAllProgress)
     const allpath  = useSelector((state)=>state.user.allpaths)
-    const { status } = useSelector((state) => state.auth)
-
-    const NewWayHandler = () => {
-        dispatch(NewWay())
-    }
     
     useEffect(() => {
         dispatch(checkUser())
     },[dispatch])
 
+    const NewWayHandler = () => {
+        try {
+            dispatch(NewWay())
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleSubmit  = (from, to, visited, length, cost) => {
         try {
             dispatch(saveRoute({ from, to, visited, length, cost }))
-            //navigate(HISTORY_ROUTE)
         } catch (error) {
             console.log(error)
         }
@@ -48,7 +51,7 @@ export default function WaySelectPage() {
                     {
                         (isLoading1) 
                         ? 
-                            <WaysListComponent path = {[].concat(path[0])} cost = {length} 
+                            <WaysListComponent path = {[].concat(path[0])} cost = {cost} length = {length} flag = {1}
                                 componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                         :
                         <div className="flex justify-center items-center">  
@@ -65,7 +68,7 @@ export default function WaySelectPage() {
                                 (isLoading2) 
                                 ? 
                                     allpath[0]?.map((path) => (
-                                        <WaysListComponent path = {path.path} cost = {path.length} flag = {1}
+                                        <WaysListComponent path = {path.path} cost = {path.cost} length={path.length} flag = {1}
                                             componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                                     ))
                                 :
@@ -77,7 +80,7 @@ export default function WaySelectPage() {
                             }
                         </div>
                 </div>
-                <Link className="button_style" to= {FORM_ROUTE} onClick = {NewWayHandler}>Добавить новый</Link>
+                <Link className="button_style" to= {HISTORY_ROUTE} onClick={NewWayHandler}>Добавить новый</Link>
             </main> 
         </div>
     )         

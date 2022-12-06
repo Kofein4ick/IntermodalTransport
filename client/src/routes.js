@@ -8,28 +8,18 @@ import WaySelectPage from './pages/WaySelectPage';
 import { AUTH_ROUTE, REG_ROUTE, FORM_ROUTE,  HISTORY_ROUTE, ADMIN_ROUTE, SELECT_ROUTE} from "./utils/consts"
 
 export const authRoutes = [
-
-
     {
         path: HISTORY_ROUTE,
         Component: History
     }
-
-    
 ]
 
 export const adminRoutes = [
-
-
     {
         path: ADMIN_ROUTE,
         Component: AdminPage
     }
-
-    
 ]
-
-
 
 export const publicRoutes = [
     {
@@ -52,10 +42,8 @@ export const publicRoutes = [
         Component: Form
     },
 
-
     {
         path: SELECT_ROUTE,
         Component: WaySelectPage
     }
-
 ]

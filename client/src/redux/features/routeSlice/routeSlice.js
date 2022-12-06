@@ -31,7 +31,6 @@ export const saveRoute = createAsyncThunk(
 export const getAllWays = createAsyncThunk('route/user', async(_,{rejectWithValue}) => {
     try {
         const { data } = await axios.get('/route/user')
-        console.log(data)
         return data
     } catch (error) {
         throw rejectWithValue(error.response.data.message)
@@ -39,7 +38,7 @@ export const getAllWays = createAsyncThunk('route/user', async(_,{rejectWithValu
 })
 
 //Удаление пользователя
-export const deleteWay = createAsyncThunk('user/delete', async({id}, {rejectWithValue}) => {
+export const deleteWay = createAsyncThunk('route/delete', async({id}, {rejectWithValue}) => {
     try{
         const{data} = await axios.delete(`/route/${id}`, {id})
         return data
@@ -53,6 +52,11 @@ export const deleteWay = createAsyncThunk('user/delete', async({id}, {rejectWith
 export const routeSlice = createSlice({
     name: 'route',
     initialState,
+    reducers: {UpdateWays: (state) =>{
+        state.isProgress = false
+        state.allPaths = []
+    }
+    },
     extraReducers: {
 
         // saveRoute
@@ -88,15 +92,19 @@ export const routeSlice = createSlice({
         // deleteWay
         [deleteWay.pending]: (state) => {
             state.isLoading = true
+            state.isProgress = false
         },
         [deleteWay.fulfilled]: (state, action) => {
             state.isLoading = false
             state.status = action.payload?.message
+            state.isProgress = true
         },
         [deleteWay.rejected]: (state) => {
             state.isLoading = false
+            state.isProgress = true
         },
     }
 })
 
+export const {UpdateWays} = routeSlice.actions
 export default routeSlice.reducer

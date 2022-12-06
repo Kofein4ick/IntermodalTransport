@@ -4,7 +4,7 @@ import { FORM_ROUTE } from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUser } from '../redux/features/slices/authSlice'
 import { NewWay } from '../redux/features/userSlice/userSlice'
-import { deleteWay, getAllWays } from '../redux/features/routeSlice/routeSlice'
+import { deleteWay, getAllWays, UpdateWays } from '../redux/features/routeSlice/routeSlice'
 import Header from '../components/Header'
 import WaysListComponent from '../components/WaysListComponent'
 
@@ -28,8 +28,9 @@ export default function History() {
 
     const handleSubmit  = (id) => {
         try {
-            console.log("Получение id: ", id)
             dispatch(deleteWay({ id }))
+            dispatch(UpdateWays())
+        dispatch(getAllWays())
         } catch (error) {
             console.log(error)
         }
@@ -45,8 +46,8 @@ export default function History() {
                         (isLoading) 
                         ?
                             allpath[0]?.map((path) => (
-                                <WaysListComponent path = {path.visited.split(' ')} cost = {path.cost} flag = {0} id = {path.id} 
-                                    componentSubmit = {(id) => handleSubmit(id)}/>
+                                <WaysListComponent path = {path.visited.split(' ')} cost = {path.cost} length={path.length} flag = {0} id = {path.id} 
+                                    componentSubmit = {() => handleSubmit(path.id)}/>
                             ))
                         :
                         <div className="flex justify-center items-center">  
