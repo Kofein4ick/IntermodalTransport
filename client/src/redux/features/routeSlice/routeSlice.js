@@ -116,5 +116,5 @@ export const routeSlice = createSlice({
     }
 })
 
-export const {UpdateWays, setFilter, setModeSort} = routeSlice.actions
+export const {UpdateWays, setFilter} = routeSlice.actions
 export default routeSlice.reducer

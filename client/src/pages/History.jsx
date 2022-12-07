@@ -4,7 +4,7 @@ import { FORM_ROUTE } from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUser } from '../redux/features/slices/authSlice'
 import { NewWay } from '../redux/features/userSlice/userSlice'
-import { deleteWay, getAllWays, UpdateWays, setFilter, setModeSort } from '../redux/features/routeSlice/routeSlice'
+import { deleteWay, getAllWays, UpdateWays, setFilter } from '../redux/features/routeSlice/routeSlice'
 import Header from '../components/Header'
 import WaysListComponent from '../components/WaysListComponent'
 
