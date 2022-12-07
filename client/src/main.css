@@ -13,7 +13,7 @@
 }
 
 .button_style {
-    @apply w-72 h-12 md:h-16 xl:w-80 mx-auto mt-11 text-center py-3 rounded-lg border-[#A3A3A3] border-2 bg-[#CEB99E] text-white text-2xl hover:bg-[#F3DFC3] hover:border-[#CACACA];
+    @apply w-72 h-12 md:h-16 xl:w-80 mx-auto mt-11 text-center py-3 rounded-lg border-[#A3A3A3] border-2 bg-[#CEB99E] text-white md:text-2xl sm:text-xl hover:bg-[#F3DFC3] hover:border-[#CACACA];
 }
 
 .button_form_style {
@@ -25,5 +25,5 @@
 }
 
 .item_button_form_style {
-    @apply w-24 h-10 md:h-12 xl:w-28 md:w-28 mx-auto mb-10 py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white italic align-top py-0.5 text-xl hover:bg-[#CEB99E] hover:border-[#A3A3A3];
+    @apply w-10 h-8 lg:w-20 lg:h-10 sm:w-10 sm:h-8 sm:text-[10px] md:h-8 xl:w-28 md:w-28 mx-auto mb-10 py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white align-text-top italic py-0.5 text-[10px] md:text-xl hover:bg-[#CEB99E] hover:border-[#A3A3A3];
 }
