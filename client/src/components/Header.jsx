@@ -53,7 +53,7 @@ export default function Header() {
                         </ul>)
                         }
                     </nav>
-                    <h1 className='text-white w-8/12 text-4xl mt-7 mx-auto inter-font text-center font-bold'>Добро пожаловать на сайт по составлению международных маршрутов</h1>
+                    <h1 className='text-white w-8/12 text-xl mt-7 mx-auto inter-font text-center font-bold md:text-3xl xl:text-4xl sm:text-xl'>Добро пожаловать на сайт по составлению международных маршрутов</h1>
                 </div>
             </header>
         </div>

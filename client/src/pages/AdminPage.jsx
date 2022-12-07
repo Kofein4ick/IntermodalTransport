@@ -9,6 +9,7 @@ export default function AdminPage() {
 
     const dispatch = useDispatch()
     const users = useSelector((state) => state.user.users)
+    const isProgressDelete = useSelector((state) => state.user.isProgressDelete)
 
     useEffect(()=> { 
     dispatch(getAllUsers())
@@ -22,8 +23,17 @@ export default function AdminPage() {
                 <div className = 'max-w-[900px] mx-auto py-8'> 
                     <div className='flex  flex-col flex-grow'>
                         <div className='flex flex-col text-3xl flex-grow '>
-                        {users?.map((users) => (
-                            <Item key={users.id} login={users.login} id ={users.id} role={users.role}/>))
+                        {
+                            isProgressDelete
+                            ?
+                                users?.map((users) => (
+                                    <Item key={users.id} login={users.login} id ={users.id} role={users.role}/>))
+                            :
+                            <div className="flex justify-center items-center">  
+                                <div className="animate-spin inline-block w-12 h-12 border-4 border-current border-t-transparent text-[#CEB99E] rounded-full" role="status" aria-label="loading">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
+                            </div>
                         }
                         </div>
                     </div>

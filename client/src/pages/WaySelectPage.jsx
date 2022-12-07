@@ -21,7 +21,7 @@ export default function WaySelectPage() {
     const cost = useSelector((state) => state.user.cost)
     const isLoading2 = useSelector((state) => state.user.isAllProgress)
     const allpath  = useSelector((state)=>state.user.allpaths)
-    
+
     useEffect(() => {
         dispatch(checkUser())
     },[dispatch])
@@ -51,7 +51,7 @@ export default function WaySelectPage() {
                     {
                         (isLoading1) 
                         ? 
-                            <WaysListComponent path = {[].concat(path[0])} cost = {cost} length = {length} flag = {1}
+                            <WaysListComponent path = {[].concat(path)} cost = {cost} length = {length} flag = {1}
                                 componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                         :
                         <div className="flex justify-center items-center">  
@@ -67,8 +67,8 @@ export default function WaySelectPage() {
                             {
                                 (isLoading2) 
                                 ? 
-                                    allpath[0]?.map((path) => (
-                                        <WaysListComponent path = {path.path} cost = {path.cost} length={path.length} flag = {1}
+                                    allpath?.map((path, index) => (
+                                        <WaysListComponent key={index} path = {path.path} cost = {path.cost} length={path.length} flag = {1}
                                             componentSubmit = {(from, to, visited, length, cost) => handleSubmit(from, to, visited, length, cost)}/>
                                     ))
                                 :

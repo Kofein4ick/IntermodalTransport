@@ -4,7 +4,7 @@ import { FORM_ROUTE } from "../utils/consts"
 import { useDispatch, useSelector } from 'react-redux'
 import { checkUser } from '../redux/features/slices/authSlice'
 import { NewWay } from '../redux/features/userSlice/userSlice'
-import { deleteWay, getAllWays, UpdateWays } from '../redux/features/routeSlice/routeSlice'
+import { deleteWay, getAllWays, UpdateWays, setFilter } from '../redux/features/routeSlice/routeSlice'
 import Header from '../components/Header'
 import WaysListComponent from '../components/WaysListComponent'
 
@@ -14,23 +14,25 @@ export default function History() {
 
     const isLoading = useSelector((state) => state.route.isProgress)
     const allpath = useSelector((state) => state.route.allPaths)
+    const isProgressDelete = useSelector((state) => state.route.isProgressDelete)
+    const filter = useSelector((state) => state.route.filter)
+    const mode = useSelector((state) => state.route.mode)
 
     const dispatch = useDispatch()
 
     const NewWayHandler = () => {
-        dispatch(NewWay())
+        dispatch(NewWay()) 
     }
     
     useEffect(() => {
         dispatch(checkUser())
+        dispatch(UpdateWays())
         dispatch(getAllWays())
     },[dispatch])
 
     const handleSubmit  = (id) => {
         try {
             dispatch(deleteWay({ id }))
-            dispatch(UpdateWays())
-        dispatch(getAllWays())
         } catch (error) {
             console.log(error)
         }
@@ -41,12 +43,33 @@ export default function History() {
             <Header/>
             <main className='mt-9 flex flex-col'>
                 <h2 className='mx-auto inter-font text-center font-bold text-3xl text-[#606060] mb-10'>Сохраненные маршруты</h2>
+                <div className="relative">
+                    <select onChange={(e) => dispatch(setFilter(e.target.value))} className="mx-auto input_form_style">
+                        <option>Отфильтровать по:</option>
+                        <option value={"length"}>По длине маршрута</option>
+                        <option value={"cost"}>По цене</option>
+                        <option value={"cost and length"}>По цене и длине маршрута</option>
+                    </select>
+                </div>
                 <div>
-                    {
-                        (isLoading) 
+                    { 
+                        (isLoading && isProgressDelete) 
                         ?
-                            allpath[0]?.map((path) => (
-                                <WaysListComponent path = {path.visited.split(' ')} cost = {path.cost} length={path.length} flag = {0} id = {path.id} 
+                            allpath.filter((path) =>{
+                                switch(filter) {
+                                    case "all":
+                                        return path
+                                    case "length":
+                                        return (path.length != null && path.cost == null) 
+                                    case "cost":
+                                        return (path.length == null && path.cost != null)
+                                    case "cost and length":
+                                        return (path.length != null && path.cost != null)
+                                    default:
+                                        return path 
+                                }
+                            }).map((path, index) => (
+                                <WaysListComponent key={index} path = {path.visited.split(' ')} cost = {path.cost} length={path.length} flag = {0} id = {path.id} 
                                     componentSubmit = {() => handleSubmit(path.id)}/>
                             ))
                         :

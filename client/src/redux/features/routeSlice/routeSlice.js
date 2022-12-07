@@ -1,11 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit'
+import { all } from 'axios'
 import axios from '../../../utils/axios'
 
 const initialState = {
     status: null,
     isLoading: false,
     isProgress: false,
-    allPaths: []
+    isProgressDelete: true,
+    allPaths: [],
+    filter: null,
 }
 
 // Сохранение маршрута
@@ -41,6 +44,7 @@ export const getAllWays = createAsyncThunk('route/user', async(_,{rejectWithValu
 export const deleteWay = createAsyncThunk('route/delete', async({id}, {rejectWithValue}) => {
     try{
         const{data} = await axios.delete(`/route/${id}`, {id})
+        data.id = id
         return data
         }catch(error){
             throw rejectWithValue(error.response.data.message)
@@ -48,14 +52,18 @@ export const deleteWay = createAsyncThunk('route/delete', async({id}, {rejectWit
     
 })
 
-
 export const routeSlice = createSlice({
     name: 'route',
     initialState,
-    reducers: {UpdateWays: (state) =>{
-        state.isProgress = false
-        state.allPaths = []
-    }
+    reducers: {
+        UpdateWays: (state) =>{
+            state.isProgress = false
+            state.allPaths = []
+        },
+
+        setFilter: (state, action) => {
+            state.filter = action.payload;
+        },
     },
     extraReducers: {
 
@@ -80,7 +88,7 @@ export const routeSlice = createSlice({
         [getAllWays.fulfilled]: (state, action) => {
             state.isLoading = false
             state.status = action.payload?.message
-            state.allPaths.push(action.payload?.routes)
+            state.allPaths = action.payload?.routes
             state.isProgress = true
         },
         [getAllWays.rejected]: (state, action) => {
@@ -92,19 +100,21 @@ export const routeSlice = createSlice({
         // deleteWay
         [deleteWay.pending]: (state) => {
             state.isLoading = true
-            state.isProgress = false
+            state.isProgressDelete = false
         },
         [deleteWay.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.allPaths = state.allPaths.filter(
+                (path) => path.id != action.payload.id,
+            )
             state.status = action.payload?.message
-            state.isProgress = true
+            state.isProgressDelete = true
         },
         [deleteWay.rejected]: (state) => {
             state.isLoading = false
-            state.isProgress = true
+            state.isProgressDelete = true
         },
     }
 })
 
-export const {UpdateWays} = routeSlice.actions
+export const {UpdateWays, setFilter} = routeSlice.actions
 export default routeSlice.reducer

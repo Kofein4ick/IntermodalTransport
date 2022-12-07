@@ -50,9 +50,9 @@ function Form() {
                         <div className="relative">
                             <select value={mode} onChange={(e) => setMode(e.target.value)} className="mx-auto input_form_style">
                                 <option>Выберете приоритет</option>
-                                <option value={0}>По времени</option>
+                                <option value={0}>По длине маршрута</option>
                                 <option value={1}>По цене</option>
-                                <option value={2}>По цене и времени</option>
+                                <option value={2}>По цене и длине маршрута</option>
                             </select>
                         </div>
                         <div className= " flex mx-auto space-x-3">

@@ -10,6 +10,7 @@ const initialState = {
     isLoading: false,
     isProgress: false,
     isAllProgress: false,
+    isProgressDelete: true
 }
 
 //Поучение всех пользователей
@@ -27,6 +28,7 @@ export const getAllUsers = createAsyncThunk('user/getAllUsers', async(_,{rejectW
 export const deleteUser = createAsyncThunk('user/delete', async({id}, {rejectWithValue}) => {
     try{
         const{data} = await axios.delete(`/user/${id}`, {id})
+        data.id = id
         return data
         }catch(error){
             throw rejectWithValue(error.response.data.message)
@@ -72,13 +74,14 @@ export const allWaysUser = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {NewWay: (state) =>{
-        state.isProgress = false
-        state.isAllProgress = false
-        state.allpaths = []
-        state.paths = []
-        state.length = null
-    }
+    reducers: {
+        NewWay: (state) =>{
+            state.isProgress = false
+            state.isAllProgress = false
+            state.allpaths = []
+            state.paths = []
+            state.length = null
+        }
     },
     extraReducers: {
 
@@ -97,12 +100,18 @@ export const userSlice = createSlice({
         //delete
         [deleteUser.pending]: (state) => {
             state.isLoading = true
+            state.isProgressDelete = false
         },
-        [deleteUser.fulfilled]: (state) => {
+        [deleteUser.fulfilled]: (state, action) => {
             state.isLoading = false
+            state.isProgressDelete = true
+            state.users = state.users.filter(
+                (path) => path.id != action.payload.id,
+            )
         },
         [deleteUser.rejected]: (state) => {
             state.isLoading = false
+            state.isProgressDelete = true
         },
 
         //bestWays
@@ -115,7 +124,7 @@ export const userSlice = createSlice({
             state.status = action.payload?.message
             state.length= action.payload?.length
             state.cost= action.payload?.cost
-            state.paths.push(action.payload?.path)
+            state.paths = action.payload?.path
             state.isProgress = true
         },
         [bestWaysUser.rejected]: (state) => {
@@ -131,7 +140,7 @@ export const userSlice = createSlice({
         [allWaysUser.fulfilled]: (state, action) => {
             state.isLoading = true
             state.status = action.payload?.message
-            state.allpaths.push(action.payload?.paths)
+            state.allpaths = action.payload?.paths
             state.isAllProgress = true
         },
         [allWaysUser.rejected]: (state) => {

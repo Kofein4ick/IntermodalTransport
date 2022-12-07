@@ -16,7 +16,7 @@ export const Item = ({login,id,role}) => {
     <div className="flex flex-col flex-grow" >
       {isflag && (
         <div className="flex">
-        <table className='w-full'>
+        <table className='w-full text-sm sm:text-sm md:text-lg xl:text-3xl'>
           <td>{id}. </td>
           <td>{login} </td>
           <td>({role})</td>
