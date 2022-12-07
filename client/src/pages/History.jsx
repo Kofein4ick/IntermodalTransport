@@ -52,7 +52,7 @@ export default function History() {
                     </select>
                 </div>
                 <div>
-                    {
+                    { 
                         (isLoading && isProgressDelete) 
                         ?
                             allpath.filter((path) =>{
