@@ -22,7 +22,7 @@ export default function History() {
     const dispatch = useDispatch()
 
     const NewWayHandler = () => {
-        dispatch(NewWay())
+        dispatch(NewWay()) 
     }
 
     // const sortArray = (array) => {
