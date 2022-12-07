@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "react-scripts start",
     "build": "tailwindcss build -i src/main.css -o public/style.css --watch",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
