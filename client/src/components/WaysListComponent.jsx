@@ -7,7 +7,7 @@ export default function WaysListComponent({path, cost, length, flag, id, compone
 
     return (
         <div className='flex'>
-            <details className='w-7/12 mx-auto cursor-pointer max-w-lg inline'>
+            <details className='w-7/12 ml-auto mr-7 cursor-pointer max-w-lg inline'>
                 <summary className='flex justify-between w-full mx-auto p-8 font-semibold inter-font border-4 border-gray-200 focus:ring-1 focus:ring-gray-200 hover:backdrop-brightness-95'>
                     <div className="text-[7px] sm:text-[10px] md:text-[14px] xl:text-[16px]">{path[0]}</div>
                     <div className="text-[7px] sm:text-[10px] md:text-[14px] xl:text-[16px]">{path[path.length - 1]}</div>
@@ -49,7 +49,7 @@ export default function WaysListComponent({path, cost, length, flag, id, compone
                     </table>
                 </div>
             </details>
-            <button className="sec_button_form_style" onClick={() => componentSubmit(from, to, visited, length, cost, id)}>
+            <button className="item_button_list_style" onClick={() => {componentSubmit(from, to, visited, length, cost, id)}}>
                 {
                     (flag) ? '+' : '-'
                 }

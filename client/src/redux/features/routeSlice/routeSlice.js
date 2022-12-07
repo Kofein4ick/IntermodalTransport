@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit'
+import { all } from 'axios'
 import axios from '../../../utils/axios'
 
 const initialState = {
@@ -7,7 +8,7 @@ const initialState = {
     isProgress: false,
     isProgressDelete: true,
     allPaths: [],
-    filter: null
+    filter: null,
 }
 
 // Сохранение маршрута
@@ -62,7 +63,7 @@ export const routeSlice = createSlice({
 
         setFilter: (state, action) => {
             state.filter = action.payload;
-        }
+        },
     },
     extraReducers: {
 
@@ -115,5 +116,5 @@ export const routeSlice = createSlice({
     }
 })
 
-export const {UpdateWays, setFilter} = routeSlice.actions
+export const {UpdateWays, setFilter, setModeSort} = routeSlice.actions
 export default routeSlice.reducer

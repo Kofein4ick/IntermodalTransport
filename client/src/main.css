@@ -27,3 +27,7 @@
 .item_button_form_style {
     @apply w-10 h-8 lg:w-20 lg:h-10 sm:w-10 sm:h-8 sm:text-[10px] md:h-8 xl:w-28 md:w-28 mx-auto mb-10 py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white align-text-top italic py-0.5 text-[10px] md:text-xl hover:bg-[#CEB99E] hover:border-[#A3A3A3];
 }
+
+.item_button_list_style {
+    @apply w-10 h-10 md:h-12 xl:w-12 md:w-12 mr-auto my-auto py-3 rounded-lg border-[#CACACA] border-2 bg-[#F3DFC3] text-white italic align-top py-0.5 text-3xl hover:bg-[#CEB99E] hover:border-[#A3A3A3] disabled:bg-[#000000];
+}
